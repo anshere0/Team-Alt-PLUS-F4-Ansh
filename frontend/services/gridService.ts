@@ -34,4 +34,12 @@ export const gridService = {
       };
     }
   },
+
+  getMeters: async (): Promise<any[]> => {
+    try {
+      return await apiClient.get('/api/v1/grid/meters');
+    } catch {
+      return [];
+    }
+  }
 };
