@@ -8,7 +8,7 @@ import { Zap, ShieldCheck, Lock, User, ArrowRight } from 'lucide-react';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('grid_operator');
-  const [password, setPassword] = useState('••••••••••••');
+  const [password, setPassword] = useState('password123');
   const [isLoading, setIsLoading] = useState(false);
   const { setAuth } = useAuthStore();
   const router = useRouter();
@@ -20,15 +20,8 @@ export default function LoginPage() {
       const session = await authService.login({ username, password });
       setAuth(session.access_token, session.user);
       router.push('/');
-    } catch {
-      setAuth('mock_token_2026', {
-        id: 'usr-99',
-        username: 'grid_operator',
-        email: 'operator@gridguard.ai',
-        role: 'GRID_ENGINEER',
-        full_name: 'Ansh Arora (Lead Operator)',
-      });
-      router.push('/');
+    } catch (err) {
+      alert("Authentication failed. Please check your credentials or backend logs.");
     } finally {
       setIsLoading(false);
     }

@@ -7,7 +7,6 @@ import { LayoutDashboard, Map, Network, ClipboardList, ShieldAlert, Cpu, UploadC
 
 const NAV_ITEMS = [
   { href: '/', label: 'Executive Dashboard', icon: LayoutDashboard },
-  { href: '/gis', label: 'GIS Loss Heatmap', icon: Map },
   { href: '/topology', label: 'Grid Topology', icon: Network },
   { href: '/inspector', label: 'Inspector Worklist', icon: ClipboardList },
   { href: '/ingestion', label: 'Data Ingestion', icon: UploadCloud },

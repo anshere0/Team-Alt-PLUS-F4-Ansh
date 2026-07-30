@@ -13,11 +13,11 @@ router = APIRouter()
 
 @router.post("/login", response_model=ApiResponse[AuthSession])
 @limiter.limit("5/minute")
-async def login(req: Request, request: LoginRequest, db: AsyncSession = Depends(get_db)):
+async def login(request: Request, login_data: LoginRequest, db: AsyncSession = Depends(get_db)):
     """
     Authenticate user and return JWT token in standard envelope.
     """
-    auth_session = await authenticate_user(request.username, request.password, db)
+    auth_session = await authenticate_user(login_data.username, login_data.password, db)
     return success_response(data=auth_session, message="Login successful")
 
 @router.get("/profile", response_model=ApiResponse[UserResponse])

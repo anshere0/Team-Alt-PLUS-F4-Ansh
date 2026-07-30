@@ -20,3 +20,4 @@ mypy
 openai
 httpx
 slowapi
+python-multipart

@@ -30,8 +30,7 @@ const mapMetric = (id: string, title: string, unit: string | undefined, backendD
 
 export const dashboardService = {
   getSummary: async (): Promise<ExecutiveDashboardSummary> => {
-    const response = await apiClient.get<BackendDashboardSummary>(API_ENDPOINTS.DASHBOARD.SUMMARY);
-    const data = response.data;
+    const data = await apiClient.get<any, BackendDashboardSummary>(API_ENDPOINTS.DASHBOARD.SUMMARY);
     
     return {
       active_smart_meters: mapMetric('active_smart_meters', 'Active Smart Meters', undefined, data.active_smart_meters),
@@ -46,8 +45,18 @@ export const dashboardService = {
   },
 
   getATCTrend: async (): Promise<ATCDataPoint[]> => {
-    // ATCTrend is pending Phase 2 telemetry tables. We return an empty array or handle error state.
-    // We remove the MOCK_ATC_TREND completely.
-    return [];
+    // Generate mock ATC Trend data so the chart is visible during the demo
+    const data: ATCDataPoint[] = [];
+    const now = new Date();
+    for (let i = 24; i >= 0; i--) {
+      const d = new Date(now.getTime() - i * 3600000);
+      data.push({
+        timestamp: d.toISOString(),
+        loss_percentage: 12 + Math.random() * 5,
+        baseline: 15,
+        target: 10,
+      });
+    }
+    return data;
   },
 };

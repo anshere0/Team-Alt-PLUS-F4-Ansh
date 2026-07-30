@@ -7,21 +7,9 @@ export const authService = {
     try {
       const response = await apiClient.post<any, AuthSession>(API_ENDPOINTS.AUTH.LOGIN, credentials);
       return response;
-    } catch {
-      // Fallback mock authentication for hackathon demo
-      const mockUser: User = {
-        id: 'usr-99',
-        username: credentials.username || 'grid_operator',
-        email: 'operator@gridguard.ai',
-        role: 'GRID_ENGINEER',
-        full_name: 'Ansh Arora (Lead Operator)',
-        avatar_url: '/assets/avatar.png',
-      };
-      return {
-        access_token: 'mock_jwt_token_gridguard_2026',
-        token_type: 'Bearer',
-        user: mockUser,
-      };
+    } catch (error) {
+      console.error("Login failed:", error);
+      throw error;
     }
   },
 

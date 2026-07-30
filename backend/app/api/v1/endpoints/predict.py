@@ -12,10 +12,10 @@ router = APIRouter()
 
 @router.post("/risk", response_model=PredictionResponse)
 @limiter.limit("20/minute")
-async def predict_risk(req: Request, request: PredictRiskRequest):
-    return await prediction_service.predict_risk(request)
+async def predict_risk(request: Request, payload: PredictRiskRequest):
+    return await prediction_service.predict_risk(payload)
 
 @router.post("/load", response_model=PredictionResponse)
 @limiter.limit("20/minute")
-async def predict_load(req: Request, request: PredictLoadRequest):
-    return await prediction_service.predict_load(request)
+async def predict_load(request: Request, payload: PredictLoadRequest):
+    return await prediction_service.predict_load(payload)

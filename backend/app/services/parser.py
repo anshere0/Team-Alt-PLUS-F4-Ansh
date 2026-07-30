@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
 from app.db.models.meter import SmartMeter, TelemetryReading
-from app.services.ai_client import ai_client
+from app.services.ai_client import get_risk_prediction
 from app.db.models.prediction import Prediction
 
 async def parse_csv_telemetry(file: UploadFile, db: AsyncSession) -> dict:
@@ -47,22 +47,10 @@ async def parse_csv_telemetry(file: UploadFile, db: AsyncSession) -> dict:
             temperature = float(row.get("temperature_c", 30))
             
             # Predict risk for this historical data point
-            # Prepare payload for AI service
-            telemetry_data = {
-                "meter_id": meter.id,
-                "timestamp": ts.isoformat(),
-                "voltage": voltage,
-                "current": current,
-                "active_power": active_power,
-                "reactive_power": 0.0,
-                "apparent_power": active_power,
-                "power_factor": power_factor,
-                "temperature": temperature
-            }
+            risk_pred = await get_risk_prediction(meter.id, active_power, ts)
             
-            ai_result = await ai_client.predict_risk(telemetry_data)
-            risk_score = ai_result.get("risk_score", 0.0)
-            anomaly_type = ai_result.get("anomaly_type", "NONE")
+            risk_score = risk_pred.prediction if risk_pred else 0.0
+            anomaly_type = risk_pred.riskLevel if risk_pred else "NONE"
             
             if risk_score > 0.5:
                 anomalies_found += 1
