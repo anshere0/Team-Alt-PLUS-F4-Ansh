@@ -66,11 +66,11 @@ export const UploadForm: React.FC = () => {
       });
       
       setUploadStatus('success');
-      setStatusMessage(response.data.message || 'File uploaded successfully.');
+      setStatusMessage((response as any).message || 'File uploaded successfully.');
       setFile(null);
     } catch (error: any) {
       setUploadStatus('error');
-      setStatusMessage(error.response?.data?.detail || 'Failed to upload file.');
+      setStatusMessage(error.response?.data?.detail || error.message || 'Failed to upload file.');
     } finally {
       setIsUploading(false);
     }

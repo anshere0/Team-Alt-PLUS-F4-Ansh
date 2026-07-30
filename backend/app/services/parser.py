@@ -87,9 +87,11 @@ async def parse_csv_telemetry(file: UploadFile, db: AsyncSession) -> dict:
         
         return {
             "success": True,
-            "records_processed": records_processed,
-            "anomalies_found": anomalies_found,
-            "message": f"Successfully processed {records_processed} records. Detected {anomalies_found} anomalies."
+            "data": {
+                "records_processed": records_processed,
+                "anomalies_found": anomalies_found,
+                "message": f"Successfully processed {records_processed} records. Detected {anomalies_found} anomalies."
+            }
         }
     except Exception as e:
         await db.rollback()
@@ -102,7 +104,9 @@ async def parse_pdf_audit(file: UploadFile, db: AsyncSession) -> dict:
     
     return {
         "success": True,
-        "records_processed": 1,
-        "anomalies_found": 1,
-        "message": f"Successfully parsed PDF audit report. Extracted 1 critical anomaly."
+        "data": {
+            "records_processed": 1,
+            "anomalies_found": 1,
+            "message": f"Successfully parsed PDF audit report. Extracted 1 critical anomaly."
+        }
     }

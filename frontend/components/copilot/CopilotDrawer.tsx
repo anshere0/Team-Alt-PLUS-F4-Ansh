@@ -48,11 +48,22 @@ export const CopilotDrawer: React.FC = () => {
     setIsTyping(true);
 
     setTimeout(() => {
-      let reply = 'Feeder F-04 currently has 3 downstream transformers showing 32% unmetered energy loss between 18:00 and 22:00. Transformer TR-102 accounts for 80% of this discrepancy due to suspected partial bypass at Meter #44822.';
-      if (text.toLowerCase().includes('shap') || text.toLowerCase().includes('44822')) {
+      let reply = 'I am currently analyzing live telemetry patterns. Can you provide more specific parameters for your query?';
+      
+      const lowerText = text.toLowerCase();
+      
+      if (lowerText.includes('feeder') || lowerText.includes('critical')) {
+        reply = 'Feeder F-04 currently has 3 downstream transformers showing 32% unmetered energy loss between 18:00 and 22:00. Transformer TR-102 accounts for 80% of this discrepancy due to suspected partial bypass at Meter #44822.';
+      } else if (lowerText.includes('shap') || lowerText.includes('44822') || lowerText.includes('explain')) {
         reply = 'Meter #44822 has an overall risk score of 0.94. The top SHAP contributor is Evening Peak Consumption Drop (+0.42 risk contribution) combined with Active Phase Imbalance (+0.28 risk).';
-      } else if (text.toLowerCase().includes('revenue') || text.toLowerCase().includes('ytd')) {
+      } else if (lowerText.includes('revenue') || lowerText.includes('ytd')) {
         reply = 'Total YTD revenue recovered stands at ₹1.24 Crore across 342 verified field audits with a 96.4% AI model precision score.';
+      } else if (lowerText.includes('highest') || lowerText.includes('financial')) {
+        reply = 'Currently, Meter MTR-A1-01-3 (Apex Industrial Complex) shows the highest financial risk at ₹45,000/day due to suspected Phase Imbalance. Recommend immediate field audit.';
+      } else if (lowerText.includes('topology') || lowerText.includes('graph')) {
+        reply = 'The Dynamic Topology Viewer maps the flow of electricity from Substations down to individual Smart Meters. High-loss paths are highlighted in red, allowing you to trace energy theft directly to its source.';
+      } else {
+        reply = `Based on current telemetry for "${text}", grid parameters are nominally stable. No active alerts match this exact query. Would you like me to run a deep diagnostic scan?`;
       }
 
       const assistantMsg: ChatMessage = {

@@ -50,12 +50,15 @@ export const dashboardService = {
     const now = new Date();
     for (let i = 24; i >= 0; i--) {
       const d = new Date(now.getTime() - i * 3600000);
+      const expected = 100 + Math.random() * 50;
       data.push({
         timestamp: d.toISOString(),
+        expected_draw_kwh: expected,
+        actual_draw_kwh: expected + (Math.random() * 20),
         loss_percentage: 12 + Math.random() * 5,
         baseline: 15,
         target: 10,
-      });
+      } as any);
     }
     return data;
   },

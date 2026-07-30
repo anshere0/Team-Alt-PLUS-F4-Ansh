@@ -10,7 +10,7 @@ from app.services import alert_service
 
 router = APIRouter()
 
-@router.get("/", response_model=list[AlertResponse])
+@router.get("/")
 async def get_active_alerts(
     limit: int = 50,
     db: AsyncSession = Depends(get_db),
