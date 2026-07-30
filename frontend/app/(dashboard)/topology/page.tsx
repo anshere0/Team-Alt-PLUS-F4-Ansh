@@ -88,6 +88,9 @@ export default function TopologyPage() {
               onNodeClick={(_, node) => setSelectedNode(node.id)}
             />
           </div>
+          <p className="text-[11px] text-[var(--text-muted)] italic font-sans pt-3 px-2">
+            ↑ This interactive topology graph maps the electrical distribution hierarchy. It allows dispatchers to visually trace anomalies back to the source feeder or transformer. Click on any node to view its live telemetry and AI risk assessment.
+          </p>
         </div>
 
         {/* Node Deep-Dive Panel */}

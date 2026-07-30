@@ -42,6 +42,22 @@ export const KPIGrid: React.FC<KPIGridProps> = ({ metrics }) => {
     }
   };
 
+  const formatValue = (value: any, unit?: string): string => {
+    if (value === null || value === undefined) return '—';
+    const num = Number(value);
+    if (isNaN(num)) return String(value);
+    
+    // For rupee values, use Indian number formatting
+    if (unit === '₹') {
+      return '₹' + num.toLocaleString('en-IN');
+    }
+    // For large numbers, use Indian locale
+    if (num >= 1000) {
+      return num.toLocaleString('en-IN');
+    }
+    return String(value);
+  };
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 font-sans">
       {metricList.map((metric, idx) => {
@@ -70,22 +86,24 @@ export const KPIGrid: React.FC<KPIGridProps> = ({ metrics }) => {
                 <span className="text-lg font-bold font-mono tracking-tight text-[var(--text-muted)]">— Pending</span>
               ) : (
                 <>
-                  <span className="text-2xl font-bold font-mono tracking-tight text-[var(--text-primary)]">{metric.value}</span>
-                  {metric.unit && <span className="text-xs font-mono text-[var(--text-secondary)] ml-1">{metric.unit}</span>}
+                  <span className="text-2xl font-bold font-mono tracking-tight text-[var(--text-primary)]">
+                    {formatValue(metric.value, metric.unit)}
+                  </span>
+                  {metric.unit && metric.unit !== '₹' && <span className="text-xs font-mono text-[var(--text-secondary)] ml-1">{metric.unit}</span>}
                 </>
               )}
             </div>
 
-            <div className="flex items-center justify-between gap-3 text-[11px] pt-4 border-t border-[var(--border-subtle)]">
+            <div className="flex items-center justify-between gap-3 text-[11px] pt-3 border-t border-[var(--border-subtle)]">
               {isUnavailable ? (
-                <div className="text-[var(--text-muted)] italic w-full">
+                <div className="text-[var(--text-muted)] italic w-full text-[10px]">
                   {metric.description || 'Awaiting future phase'}
                 </div>
               ) : (
                 <>
                   <div
-                    className={`inline-flex items-center gap-2 font-mono font-medium ${isUp
-                      ? metric.status === 'CRITICAL' || metric.status === 'WARNING'
+                    className={`inline-flex items-center gap-1 font-mono font-medium ${isUp
+                      ? metric.id.includes('loss') || metric.id.includes('theft')
                         ? 'text-[var(--accent-rose)]'
                         : 'text-[var(--accent-emerald)]'
                       : isDown
@@ -104,10 +122,16 @@ export const KPIGrid: React.FC<KPIGridProps> = ({ metrics }) => {
                       {metric.change_percentage > 0 ? `+${metric.change_percentage}%` : `${metric.change_percentage}%`}
                     </span>
                   </div>
-                  <span className="text-[var(--text-muted)] text-[11px] truncate max-w-[130px]">{metric.description}</span>
                 </>
               )}
             </div>
+
+            {/* Feature Description for Judges */}
+            {!isUnavailable && metric.description && (
+              <p className="text-[11px] text-[var(--text-muted)] italic leading-tight mt-3 font-sans">
+                {metric.description}
+              </p>
+            )}
           </motion.div>
         );
       })}

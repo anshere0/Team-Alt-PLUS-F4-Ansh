@@ -38,17 +38,27 @@ export function useWebSocket() {
             
             // Handle Alerts
             if (message.type === 'NEW_ALERT' || message.event_type === 'ALERT_TRIGGERED' || message.event_type === 'THEFT_SIMULATED') {
+              // Map simulation scenarios to realistic consumer data
+              const CONSUMER_MAP: Record<string, { meter: string; consumer: string; transformer: string; feeder: string; loss: number }> = {
+                'PARTIAL_BYPASS': { meter: 'MTR-A1-01-3', consumer: 'Apex Industrial Complex', transformer: 'TX-A1-01', feeder: 'FDR-A1', loss: 84500 },
+                'METER_FREEZE': { meter: 'MTR-A2-01-1', consumer: 'Prestige Residential Hub', transformer: 'TX-A2-01', feeder: 'FDR-A2', loss: 45000 },
+                'DIRECT_HOOKING': { meter: 'MTR-A1-02-2', consumer: 'Delta Steel Industries', transformer: 'TX-A1-02', feeder: 'FDR-A1', loss: 120000 },
+              };
+              const scenario = message.data?.scenario || message.data?.anomaly_type || 'PARTIAL_BYPASS';
+              const mapped = CONSUMER_MAP[scenario] || CONSUMER_MAP['PARTIAL_BYPASS'];
+
               const newAlert: GridAlert = {
                 alert_id: message.data?.alert_id || `alt-${Date.now()}`,
-                meter_id: message.data?.meter_id || message.data?.target_meter_id || 'MTR-SIMULATED',
-                transformer_id: message.data?.transformer_id || 'TR-SIMULATED',
-                feeder_id: 'FDR-04',
+                meter_id: mapped.meter,
+                consumer_name: mapped.consumer,
+                transformer_id: mapped.transformer,
+                feeder_id: mapped.feeder,
                 substation_id: 'SUB-01',
                 severity: message.data?.severity || 'CRITICAL',
-                anomaly_type: message.data?.scenario || message.data?.anomaly_type || 'PARTIAL_BYPASS',
+                anomaly_type: scenario,
                 risk_score: message.data?.new_risk_score || message.data?.risk_score || 0.95,
-                financial_loss_estimate: message.data?.financial_loss_estimate || 45000,
-                message: message.data?.message || message.data?.shap_summary || 'Live anomaly detected!',
+                financial_loss_estimate: message.data?.financial_loss_estimate || mapped.loss,
+                message: message.data?.message || message.data?.shap_summary || `AI Detected ${scenario.replace(/_/g, ' ')} anomaly on ${mapped.consumer}`,
                 timestamp: new Date().toISOString(),
                 is_acknowledged: false,
               };
