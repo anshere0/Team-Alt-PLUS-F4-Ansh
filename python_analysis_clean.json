@@ -1,0 +1,837 @@
+{
+  "analyze.py": {
+    "imports": [
+      "os",
+      "ast",
+      "json"
+    ],
+    "functions": [
+      "analyze_python_file",
+      "analyze_repo"
+    ],
+    "classes": [],
+    "lines": 30
+  },
+  "analyze_clean.py": {
+    "error": "invalid non-printable character U+FEFF (<unknown>, line 1)"
+  },
+  "ai\\debug_inference.py": {
+    "imports": [
+      "numpy",
+      "traceback",
+      "inference.predictor"
+    ],
+    "functions": [
+      "run"
+    ],
+    "classes": [],
+    "lines": 17
+  },
+  "ai\\api\\main.py": {
+    "imports": [
+      "fastapi",
+      "api.routes",
+      "inference.predictor"
+    ],
+    "functions": [
+      "startup_event",
+      "health",
+      "ready",
+      "version"
+    ],
+    "classes": [],
+    "lines": 32
+  },
+  "ai\\api\\routes.py": {
+    "imports": [
+      "numpy",
+      "fastapi",
+      "api.schemas",
+      "inference.predictor"
+    ],
+    "functions": [
+      "predict_risk",
+      "predict_load"
+    ],
+    "classes": [],
+    "lines": 33
+  },
+  "ai\\api\\schemas.py": {
+    "imports": [
+      "datetime",
+      "pydantic"
+    ],
+    "functions": [],
+    "classes": [
+      "PredictLoadRequest",
+      "PredictRiskRequest",
+      "PredictionResponse"
+    ],
+    "lines": 25
+  },
+  "ai\\api\\__init__.py": {
+    "imports": [],
+    "functions": [],
+    "classes": [],
+    "lines": 1
+  },
+  "ai\\datasets\\graph_builder.py": {
+    "imports": [
+      "random",
+      "networkx",
+      "numpy",
+      "torch",
+      "torch_geometric.data"
+    ],
+    "functions": [
+      "build_synthetic_grid_graph"
+    ],
+    "classes": [],
+    "lines": 87
+  },
+  "ai\\datasets\\synthetic_load.py": {
+    "imports": [
+      "random",
+      "numpy",
+      "pandas"
+    ],
+    "functions": [
+      "generate_load_forecast_dataset"
+    ],
+    "classes": [],
+    "lines": 43
+  },
+  "ai\\datasets\\synthetic_theft.py": {
+    "imports": [
+      "random",
+      "numpy",
+      "pandas"
+    ],
+    "functions": [
+      "generate_normal_telemetry",
+      "inject_anomalies",
+      "create_training_dataset"
+    ],
+    "classes": [],
+    "lines": 64
+  },
+  "ai\\datasets\\__init__.py": {
+    "imports": [],
+    "functions": [],
+    "classes": [],
+    "lines": 0
+  },
+  "ai\\inference\\predictor.py": {
+    "imports": [
+      "json",
+      "os",
+      "joblib",
+      "numpy",
+      "shap",
+      "typing"
+    ],
+    "functions": [
+      "__new__",
+      "_initialize",
+      "_generate_human_readable_desc",
+      "predict",
+      "predict_load"
+    ],
+    "classes": [
+      "InferencePredictor"
+    ],
+    "lines": 165
+  },
+  "ai\\inference\\__init__.py": {
+    "imports": [],
+    "functions": [],
+    "classes": [],
+    "lines": 0
+  },
+  "ai\\models\\gnn_loss_detector.py": {
+    "imports": [
+      "torch",
+      "torch.nn.functional",
+      "torch_geometric.nn"
+    ],
+    "functions": [
+      "__init__",
+      "forward"
+    ],
+    "classes": [
+      "GridGraphSAGE"
+    ],
+    "lines": 21
+  },
+  "ai\\preprocessing\\preprocessing.py": {
+    "imports": [
+      "joblib",
+      "numpy",
+      "pandas",
+      "sklearn.preprocessing"
+    ],
+    "functions": [
+      "__init__",
+      "extract_features",
+      "fit_transform_df",
+      "transform_single"
+    ],
+    "classes": [
+      "FeaturePreprocessor"
+    ],
+    "lines": 47
+  },
+  "ai\\preprocessing\\__init__.py": {
+    "imports": [],
+    "functions": [],
+    "classes": [],
+    "lines": 0
+  },
+  "ai\\tests\\test_api.py": {
+    "imports": [
+      "pytest",
+      "fastapi.testclient",
+      "api.main",
+      "inference.predictor"
+    ],
+    "functions": [
+      "setup_predictor",
+      "test_health",
+      "test_ready",
+      "test_predict_risk_normal",
+      "test_predict_risk_anomaly",
+      "test_predict_load"
+    ],
+    "classes": [],
+    "lines": 69
+  },
+  "ai\\training\\train_baseline.py": {
+    "imports": [
+      "os",
+      "joblib",
+      "json",
+      "sklearn.ensemble",
+      "sklearn.metrics",
+      "datasets.synthetic_theft",
+      "preprocessing.preprocessing"
+    ],
+    "functions": [
+      "train_baseline_model"
+    ],
+    "classes": [],
+    "lines": 51
+  },
+  "ai\\training\\train_forecaster.py": {
+    "imports": [
+      "json",
+      "os",
+      "joblib",
+      "numpy",
+      "sklearn.ensemble",
+      "sklearn.metrics",
+      "datasets.synthetic_load",
+      "preprocessing.preprocessing"
+    ],
+    "functions": [
+      "train_forecaster_model"
+    ],
+    "classes": [],
+    "lines": 71
+  },
+  "ai\\training\\train_gnn.py": {
+    "imports": [
+      "os",
+      "torch",
+      "torch.nn.functional",
+      "datasets.graph_builder",
+      "models.gnn_loss_detector"
+    ],
+    "functions": [
+      "train_gnn"
+    ],
+    "classes": [],
+    "lines": 54
+  },
+  "ai\\training\\__init__.py": {
+    "imports": [],
+    "functions": [],
+    "classes": [],
+    "lines": 0
+  },
+  "backend\\alembic\\env.py": {
+    "imports": [
+      "asyncio",
+      "os",
+      "sys",
+      "logging.config",
+      "sqlalchemy",
+      "sqlalchemy.engine",
+      "sqlalchemy.ext.asyncio",
+      "alembic",
+      "app.core.config",
+      "app.db.models"
+    ],
+    "functions": [
+      "run_migrations_offline",
+      "do_run_migrations",
+      "run_async_migrations",
+      "run_migrations_online"
+    ],
+    "classes": [],
+    "lines": 97
+  },
+  "backend\\alembic\\versions\\071f166ebae9_initial_schema.py": {
+    "imports": [
+      "sqlalchemy",
+      "collections.abc",
+      "sqlalchemy.dialects",
+      "alembic"
+    ],
+    "functions": [
+      "upgrade",
+      "downgrade"
+    ],
+    "classes": [],
+    "lines": 159
+  },
+  "backend\\app\\main.py": {
+    "imports": [
+      "asyncio",
+      "httpx",
+      "contextlib",
+      "fastapi",
+      "fastapi.middleware.cors",
+      "app.api.v1.router",
+      "app.core.config",
+      "app.services.simulator",
+      "app.core.database",
+      "sqlalchemy"
+    ],
+    "functions": [
+      "lifespan",
+      "health_check",
+      "health_db",
+      "health_redis",
+      "health_ai",
+      "health_full",
+      "ready_check"
+    ],
+    "classes": [],
+    "lines": 88
+  },
+  "backend\\app\\api\\v1\\router.py": {
+    "imports": [
+      "fastapi",
+      "app.api.v1.endpoints"
+    ],
+    "functions": [],
+    "classes": [],
+    "lines": 12
+  },
+  "backend\\app\\api\\v1\\endpoints\\ai.py": {
+    "imports": [
+      "fastapi",
+      "sqlalchemy.ext.asyncio",
+      "app.core.database",
+      "app.core.security",
+      "app.db.models.user",
+      "app.schemas.ai",
+      "app.services"
+    ],
+    "functions": [
+      "chat_with_copilot"
+    ],
+    "classes": [],
+    "lines": 20
+  },
+  "backend\\app\\api\\v1\\endpoints\\alerts.py": {
+    "imports": [
+      "fastapi",
+      "sqlalchemy.ext.asyncio",
+      "app.core.database",
+      "app.core.security",
+      "app.db.models.user",
+      "app.schemas.alert",
+      "app.services"
+    ],
+    "functions": [
+      "get_active_alerts"
+    ],
+    "classes": [],
+    "lines": 20
+  },
+  "backend\\app\\api\\v1\\endpoints\\auth.py": {
+    "imports": [
+      "fastapi",
+      "sqlalchemy.ext.asyncio",
+      "app.core.database",
+      "app.core.responses",
+      "app.core.security",
+      "app.db.models.user",
+      "app.schemas.auth",
+      "app.services.auth_service"
+    ],
+    "functions": [
+      "login",
+      "profile"
+    ],
+    "classes": [],
+    "lines": 27
+  },
+  "backend\\app\\api\\v1\\endpoints\\dashboard.py": {
+    "imports": [
+      "fastapi",
+      "sqlalchemy.ext.asyncio",
+      "app.core.database",
+      "app.core.security",
+      "app.db.models.user",
+      "app.schemas.dashboard",
+      "app.services"
+    ],
+    "functions": [
+      "get_dashboard_summary"
+    ],
+    "classes": [],
+    "lines": 18
+  },
+  "backend\\app\\api\\v1\\endpoints\\grid.py": {
+    "imports": [
+      "fastapi",
+      "sqlalchemy.ext.asyncio",
+      "app.core.database",
+      "app.core.security",
+      "app.db.models.user",
+      "app.schemas.grid",
+      "app.services"
+    ],
+    "functions": [
+      "get_substations",
+      "get_feeders",
+      "get_transformers",
+      "get_meters"
+    ],
+    "classes": [],
+    "lines": 51
+  },
+  "backend\\app\\api\\v1\\endpoints\\predict.py": {
+    "imports": [
+      "fastapi",
+      "app.schemas.predict",
+      "app.services.prediction_service"
+    ],
+    "functions": [
+      "predict_risk",
+      "predict_load"
+    ],
+    "classes": [],
+    "lines": 18
+  },
+  "backend\\app\\api\\v1\\endpoints\\ws.py": {
+    "imports": [
+      "logging",
+      "fastapi",
+      "jose",
+      "sqlalchemy",
+      "sqlalchemy.ext.asyncio",
+      "app.core.config",
+      "app.core.database",
+      "app.core.security",
+      "app.db.models.user",
+      "app.services.ws_manager"
+    ],
+    "functions": [
+      "get_user_from_token",
+      "websocket_endpoint"
+    ],
+    "classes": [],
+    "lines": 69
+  },
+  "backend\\app\\core\\config.py": {
+    "imports": [
+      "pydantic_settings"
+    ],
+    "functions": [],
+    "classes": [
+      "Settings"
+    ],
+    "lines": 18
+  },
+  "backend\\app\\core\\database.py": {
+    "imports": [
+      "sqlalchemy.ext.asyncio",
+      "app.core.config"
+    ],
+    "functions": [
+      "get_db"
+    ],
+    "classes": [],
+    "lines": 27
+  },
+  "backend\\app\\core\\responses.py": {
+    "imports": [
+      "typing",
+      "pydantic"
+    ],
+    "functions": [
+      "success_response",
+      "error_response"
+    ],
+    "classes": [
+      "ApiResponse"
+    ],
+    "lines": 19
+  },
+  "backend\\app\\core\\security.py": {
+    "imports": [
+      "bcrypt",
+      "datetime",
+      "typing",
+      "fastapi",
+      "fastapi.security",
+      "jose",
+      "sqlalchemy",
+      "sqlalchemy.ext.asyncio",
+      "app.core.config",
+      "app.core.database",
+      "app.db.models.user"
+    ],
+    "functions": [
+      "verify_password",
+      "get_password_hash",
+      "create_access_token",
+      "get_current_user",
+      "require_role",
+      "role_checker"
+    ],
+    "classes": [],
+    "lines": 67
+  },
+  "backend\\app\\db\\base.py": {
+    "imports": [
+      "sqlalchemy.orm"
+    ],
+    "functions": [],
+    "classes": [
+      "Base"
+    ],
+    "lines": 5
+  },
+  "backend\\app\\db\\seed.py": {
+    "imports": [
+      "asyncio",
+      "os",
+      "sys",
+      "sqlalchemy",
+      "sqlalchemy.ext.asyncio",
+      "app.core.database",
+      "app.core.security",
+      "app.db.models.grid",
+      "app.db.models.meter",
+      "app.db.models.user"
+    ],
+    "functions": [
+      "seed_users",
+      "seed_grid",
+      "main"
+    ],
+    "classes": [],
+    "lines": 86
+  },
+  "backend\\app\\db\\models\\alert.py": {
+    "imports": [
+      "uuid",
+      "datetime",
+      "enum",
+      "sqlalchemy",
+      "sqlalchemy",
+      "sqlalchemy.dialects.postgresql",
+      "sqlalchemy.orm",
+      "app.db.base"
+    ],
+    "functions": [],
+    "classes": [
+      "AlertStatus",
+      "InspectionStatus",
+      "Alert",
+      "Inspection",
+      "AuditLog"
+    ],
+    "lines": 58
+  },
+  "backend\\app\\db\\models\\grid.py": {
+    "imports": [
+      "uuid",
+      "datetime",
+      "sqlalchemy",
+      "sqlalchemy.orm",
+      "app.db.base"
+    ],
+    "functions": [],
+    "classes": [
+      "Substation",
+      "Feeder",
+      "Transformer"
+    ],
+    "lines": 46
+  },
+  "backend\\app\\db\\models\\meter.py": {
+    "imports": [
+      "uuid",
+      "datetime",
+      "sqlalchemy",
+      "sqlalchemy.orm",
+      "app.db.base"
+    ],
+    "functions": [],
+    "classes": [
+      "SmartMeter",
+      "TelemetryReading"
+    ],
+    "lines": 39
+  },
+  "backend\\app\\db\\models\\user.py": {
+    "imports": [
+      "uuid",
+      "datetime",
+      "enum",
+      "sqlalchemy",
+      "sqlalchemy",
+      "sqlalchemy.orm",
+      "app.db.base"
+    ],
+    "functions": [],
+    "classes": [
+      "Role",
+      "User"
+    ],
+    "lines": 27
+  },
+  "backend\\app\\db\\models\\__init__.py": {
+    "imports": [
+      "app.db.base",
+      "app.db.models.alert",
+      "app.db.models.grid",
+      "app.db.models.meter",
+      "app.db.models.user"
+    ],
+    "functions": [],
+    "classes": [],
+    "lines": 27
+  },
+  "backend\\app\\schemas\\ai.py": {
+    "imports": [
+      "pydantic"
+    ],
+    "functions": [],
+    "classes": [
+      "ChatRequest",
+      "ChatResponse"
+    ],
+    "lines": 8
+  },
+  "backend\\app\\schemas\\alert.py": {
+    "imports": [
+      "datetime",
+      "pydantic"
+    ],
+    "functions": [],
+    "classes": [
+      "AlertResponse",
+      "TelemetryResponse"
+    ],
+    "lines": 31
+  },
+  "backend\\app\\schemas\\auth.py": {
+    "imports": [
+      "pydantic",
+      "app.db.models.user"
+    ],
+    "functions": [],
+    "classes": [
+      "LoginRequest",
+      "UserResponse",
+      "AuthSession"
+    ],
+    "lines": 21
+  },
+  "backend\\app\\schemas\\dashboard.py": {
+    "imports": [
+      "pydantic"
+    ],
+    "functions": [],
+    "classes": [
+      "DashboardSummary"
+    ],
+    "lines": 11
+  },
+  "backend\\app\\schemas\\grid.py": {
+    "imports": [
+      "datetime",
+      "pydantic"
+    ],
+    "functions": [],
+    "classes": [
+      "SubstationResponse",
+      "FeederResponse",
+      "TransformerResponse",
+      "SmartMeterResponse"
+    ],
+    "lines": 49
+  },
+  "backend\\app\\schemas\\predict.py": {
+    "imports": [
+      "typing",
+      "pydantic"
+    ],
+    "functions": [],
+    "classes": [
+      "PredictRiskRequest",
+      "PredictLoadRequest",
+      "PredictionResponse"
+    ],
+    "lines": 19
+  },
+  "backend\\app\\services\\ai_service.py": {
+    "imports": [
+      "json",
+      "logging",
+      "openai",
+      "sqlalchemy.ext.asyncio",
+      "app.core.config",
+      "app.services"
+    ],
+    "functions": [
+      "process_chat"
+    ],
+    "classes": [],
+    "lines": 101
+  },
+  "backend\\app\\services\\alert_service.py": {
+    "imports": [
+      "sqlalchemy",
+      "sqlalchemy.ext.asyncio",
+      "app.db.models.alert"
+    ],
+    "functions": [
+      "get_active_alerts"
+    ],
+    "classes": [],
+    "lines": 16
+  },
+  "backend\\app\\services\\auth_service.py": {
+    "imports": [
+      "fastapi",
+      "sqlalchemy",
+      "sqlalchemy.ext.asyncio",
+      "app.core.security",
+      "app.db.models.user",
+      "app.schemas.auth"
+    ],
+    "functions": [
+      "authenticate_user"
+    ],
+    "classes": [],
+    "lines": 29
+  },
+  "backend\\app\\services\\dashboard_service.py": {
+    "imports": [
+      "sqlalchemy",
+      "sqlalchemy.ext.asyncio",
+      "app.db.models.alert",
+      "app.db.models.grid",
+      "app.db.models.meter",
+      "app.schemas.dashboard"
+    ],
+    "functions": [
+      "get_dashboard_summary"
+    ],
+    "classes": [],
+    "lines": 36
+  },
+  "backend\\app\\services\\grid_service.py": {
+    "imports": [
+      "sqlalchemy",
+      "sqlalchemy.ext.asyncio",
+      "app.db.models.grid",
+      "app.db.models.meter"
+    ],
+    "functions": [
+      "get_all_substations",
+      "get_feeders",
+      "get_transformers",
+      "get_smart_meters"
+    ],
+    "classes": [],
+    "lines": 32
+  },
+  "backend\\app\\services\\prediction_service.py": {
+    "imports": [
+      "logging",
+      "httpx",
+      "fastapi",
+      "app.core.config",
+      "app.schemas.predict"
+    ],
+    "functions": [
+      "__init__",
+      "predict_risk",
+      "predict_load"
+    ],
+    "classes": [
+      "PredictionService"
+    ],
+    "lines": 52
+  },
+  "backend\\app\\services\\simulator.py": {
+    "imports": [
+      "asyncio",
+      "logging",
+      "random",
+      "datetime",
+      "sqlalchemy",
+      "sqlalchemy.ext.asyncio",
+      "app.core.database",
+      "app.db.models.alert",
+      "app.db.models.meter",
+      "app.schemas.alert",
+      "app.services.ws_manager"
+    ],
+    "functions": [
+      "generate_telemetry_for_meter",
+      "run_simulation"
+    ],
+    "classes": [],
+    "lines": 118
+  },
+  "backend\\app\\services\\ws_manager.py": {
+    "imports": [
+      "logging",
+      "typing",
+      "fastapi"
+    ],
+    "functions": [
+      "__init__",
+      "connect",
+      "disconnect",
+      "send_personal_message",
+      "broadcast"
+    ],
+    "classes": [
+      "ConnectionManager"
+    ],
+    "lines": 38
+  },
+  "integration-tests\\health\\health_check.py": {
+    "imports": [
+      "urllib.request",
+      "time",
+      "sys"
+    ],
+    "functions": [
+      "check_health",
+      "main"
+    ],
+    "classes": [],
+    "lines": 40
+  }
+}

@@ -1,0 +1,399 @@
+{
+  "frontend/app/(auth)/login/page.tsx": {
+    "lines": 102,
+    "imports": 5,
+    "components": [
+      "LoginPage"
+    ],
+    "hooks": [
+      "useState",
+      "useRouter",
+      "useAuthStore"
+    ],
+    "isPage": true
+  },
+  "frontend/app/(dashboard)/gis/page.tsx": {
+    "lines": 127,
+    "imports": 5,
+    "components": [
+      "GISMapPage"
+    ],
+    "hooks": [
+      "useState",
+      "useThemeStore"
+    ],
+    "isPage": true
+  },
+  "frontend/app/(dashboard)/inspector/page.tsx": {
+    "lines": 133,
+    "imports": 3,
+    "components": [
+      "InspectorPage"
+    ],
+    "hooks": [
+      "useState"
+    ],
+    "isPage": true
+  },
+  "frontend/app/(dashboard)/layout.tsx": {
+    "lines": 26,
+    "imports": 4,
+    "components": [
+      "DashboardLayout"
+    ],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/app/(dashboard)/page.tsx": {
+    "lines": 59,
+    "imports": 8,
+    "components": [
+      "DashboardPage"
+    ],
+    "hooks": [
+      "useDashboard",
+      "useAlerts"
+    ],
+    "isPage": true
+  },
+  "frontend/app/(dashboard)/topology/page.tsx": {
+    "lines": 123,
+    "imports": 4,
+    "components": [
+      "TopologyPage"
+    ],
+    "hooks": [],
+    "isPage": true
+  },
+  "frontend/app/layout.tsx": {
+    "lines": 36,
+    "imports": 2,
+    "components": [
+      "RootLayout"
+    ],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/components/auth/ProtectedRoute.tsx": {
+    "lines": 29,
+    "imports": 3,
+    "components": [],
+    "hooks": [
+      "useEffect",
+      "useState",
+      "useRouter",
+      "useAuthStore"
+    ],
+    "isPage": false
+  },
+  "frontend/components/common/AppShell.tsx": {
+    "lines": 33,
+    "imports": 6,
+    "components": [],
+    "hooks": [
+      "useEffect",
+      "useWebSocket",
+      "useThemeStore"
+    ],
+    "isPage": false
+  },
+  "frontend/components/common/Header.tsx": {
+    "lines": 84,
+    "imports": 6,
+    "components": [],
+    "hooks": [
+      "useState",
+      "useEffect",
+      "useAuthStore",
+      "useUIStore",
+      "useThemeStore"
+    ],
+    "isPage": false
+  },
+  "frontend/components/common/LiveConnectionBadge.tsx": {
+    "lines": 44,
+    "imports": 3,
+    "components": [],
+    "hooks": [
+      "useNotificationStore"
+    ],
+    "isPage": false
+  },
+  "frontend/components/common/Sidebar.tsx": {
+    "lines": 77,
+    "imports": 4,
+    "components": [],
+    "hooks": [
+      "usePathname"
+    ],
+    "isPage": false
+  },
+  "frontend/components/copilot/CopilotDrawer.tsx": {
+    "lines": 175,
+    "imports": 4,
+    "components": [],
+    "hooks": [
+      "useState",
+      "useUIStore"
+    ],
+    "isPage": false
+  },
+  "frontend/components/dashboard/AlertTicker.tsx": {
+    "lines": 121,
+    "imports": 6,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/components/dashboard/ATCChart.tsx": {
+    "lines": 106,
+    "imports": 4,
+    "components": [],
+    "hooks": [
+      "useThemeStore"
+    ],
+    "isPage": false
+  },
+  "frontend/components/dashboard/KPIGrid.tsx": {
+    "lines": 109,
+    "imports": 4,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/components/simulation/SimulationBar.tsx": {
+    "lines": 101,
+    "imports": 5,
+    "components": [],
+    "hooks": [
+      "useState",
+      "useNotificationStore"
+    ],
+    "isPage": false
+  },
+  "frontend/constants/api.ts": {
+    "lines": 31,
+    "imports": 0,
+    "components": [
+      "API_ENDPOINTS"
+    ],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/constants/colors.ts": {
+    "lines": 12,
+    "imports": 0,
+    "components": [
+      "CYBER_GRID_COLORS"
+    ],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/constants/routes.ts": {
+    "lines": 9,
+    "imports": 0,
+    "components": [
+      "ROUTES"
+    ],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/hooks/useAlerts.ts": {
+    "lines": 30,
+    "imports": 4,
+    "components": [],
+    "hooks": [
+      "useEffect",
+      "useQuery",
+      "useNotificationStore",
+      "useAlerts"
+    ],
+    "isPage": false
+  },
+  "frontend/hooks/useDashboard.ts": {
+    "lines": 29,
+    "imports": 2,
+    "components": [],
+    "hooks": [
+      "useQuery",
+      "useDashboard"
+    ],
+    "isPage": false
+  },
+  "frontend/hooks/useWebSocket.ts": {
+    "lines": 73,
+    "imports": 3,
+    "components": [],
+    "hooks": [
+      "useEffect",
+      "useRef",
+      "useNotificationStore",
+      "useWebSocket"
+    ],
+    "isPage": false
+  },
+  "frontend/next-env.d.ts": {
+    "lines": 7,
+    "imports": 0,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/next.config.ts": {
+    "lines": 8,
+    "imports": 1,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/services/alertService.ts": {
+    "lines": 24,
+    "imports": 4,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/services/apiClient.ts": {
+    "lines": 50,
+    "imports": 3,
+    "components": [],
+    "hooks": [
+      "useAuthStore"
+    ],
+    "isPage": false
+  },
+  "frontend/services/authService.ts": {
+    "lines": 42,
+    "imports": 3,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/services/dashboardService.ts": {
+    "lines": 23,
+    "imports": 4,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/services/gridService.ts": {
+    "lines": 39,
+    "imports": 5,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/services/mockData.ts": {
+    "lines": 283,
+    "imports": 4,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/store/authStore.ts": {
+    "lines": 31,
+    "imports": 2,
+    "components": [],
+    "hooks": [
+      "useAuthStore"
+    ],
+    "isPage": false
+  },
+  "frontend/store/notificationStore.ts": {
+    "lines": 34,
+    "imports": 2,
+    "components": [],
+    "hooks": [
+      "useNotificationStore"
+    ],
+    "isPage": false
+  },
+  "frontend/store/themeStore.ts": {
+    "lines": 38,
+    "imports": 1,
+    "components": [],
+    "hooks": [
+      "useThemeStore"
+    ],
+    "isPage": false
+  },
+  "frontend/store/uiStore.ts": {
+    "lines": 26,
+    "imports": 1,
+    "components": [],
+    "hooks": [
+      "useUIStore"
+    ],
+    "isPage": false
+  },
+  "frontend/types/alert.ts": {
+    "lines": 19,
+    "imports": 0,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/types/api.ts": {
+    "lines": 32,
+    "imports": 0,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/types/dashboard.ts": {
+    "lines": 31,
+    "imports": 0,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/types/prediction.ts": {
+    "lines": 16,
+    "imports": 0,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/types/telemetry.ts": {
+    "lines": 33,
+    "imports": 0,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/types/topology.ts": {
+    "lines": 28,
+    "imports": 0,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/types/user.ts": {
+    "lines": 22,
+    "imports": 0,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/utils/calculateRiskLevel.ts": {
+    "lines": 41,
+    "imports": 0,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/utils/formatDate.ts": {
+    "lines": 27,
+    "imports": 0,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  },
+  "frontend/utils/formatPercentage.ts": {
+    "lines": 13,
+    "imports": 0,
+    "components": [],
+    "hooks": [],
+    "isPage": false
+  }
+}
