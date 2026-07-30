@@ -1,15 +1,16 @@
 from datetime import datetime, timedelta, timezone
-from typing import Optional, Any
-from jose import jwt, JWTError
+from typing import Any
+
 import bcrypt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy.ext.asyncio import AsyncSession
+from jose import JWTError, jwt
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.database import get_db
-from app.db.models.user import User, Role
+from app.db.models.user import Role, User
 
 # Note: We use OAuth2PasswordBearer for swagger UI compatibility, but our frontend uses standard JSON LoginRequest
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
@@ -22,7 +23,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 def get_password_hash(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
-def create_access_token(subject: str | Any, role: str, expires_delta: Optional[timedelta] = None) -> str:
+def create_access_token(subject: str | Any, role: str, expires_delta: timedelta | None = None) -> str:
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
     else:

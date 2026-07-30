@@ -1,6 +1,8 @@
+import random
+
 import numpy as np
 import pandas as pd
-import random
+
 
 def generate_normal_telemetry(num_samples: int = 1000) -> pd.DataFrame:
     """Generates synthetic normal telemetry data based on Master Prompt contract."""

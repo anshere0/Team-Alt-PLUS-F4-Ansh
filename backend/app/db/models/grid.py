@@ -1,8 +1,11 @@
-from datetime import datetime, timezone
 import uuid
-from sqlalchemy import String, Float, Integer, ForeignKey, DateTime
+from datetime import datetime, timezone
+
+from sqlalchemy import DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.db.base import Base
+
 
 class Substation(Base):
     __tablename__ = "substations"

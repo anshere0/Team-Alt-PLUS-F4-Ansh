@@ -1,6 +1,8 @@
+import random
+
 import numpy as np
 import pandas as pd
-import random
+
 
 def generate_load_forecast_dataset(num_samples: int = 4000) -> pd.DataFrame:
     """Generates synthetic dataset for load forecasting."""

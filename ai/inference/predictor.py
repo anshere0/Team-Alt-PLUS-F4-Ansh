@@ -1,16 +1,18 @@
-import os
-import joblib
 import json
-import shap
+import os
+from typing import Any
+
+import joblib
 import numpy as np
-from typing import Dict, Any, List
+import shap
+
 
 class InferencePredictor:
     _instance = None
     
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
-            cls._instance = super(InferencePredictor, cls).__new__(cls)
+            cls._instance = super().__new__(cls)
             cls._instance._initialize(*args, **kwargs)
         return cls._instance
         
@@ -58,7 +60,7 @@ class InferencePredictor:
             return f"Humidity of {value:.1f}% {impact} the risk score."
         return f"{feature_name} value of {value:.2f} {impact} the risk score."
 
-    def predict(self, extracted_features: np.ndarray) -> Dict[str, Any]:
+    def predict(self, extracted_features: np.ndarray) -> dict[str, Any]:
         """Runs the model and SHAP explainer on a single sample."""
         if not self.is_ready:
             raise RuntimeError("Model is not loaded.")
@@ -113,7 +115,7 @@ class InferencePredictor:
             "explanation": explanation_strings
         }
 
-    def predict_load(self, extracted_features: np.ndarray) -> Dict[str, Any]:
+    def predict_load(self, extracted_features: np.ndarray) -> dict[str, Any]:
         """Runs the load forecaster and SHAP explainer."""
         if not self.is_ready:
             raise RuntimeError("Model is not loaded.")

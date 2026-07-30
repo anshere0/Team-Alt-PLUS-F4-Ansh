@@ -1,9 +1,13 @@
-from datetime import datetime, timezone
 import uuid
-from sqlalchemy import String, DateTime, Enum as SQLEnum
-from sqlalchemy.orm import Mapped, mapped_column
+from datetime import datetime, timezone
 from enum import Enum
+
+from sqlalchemy import DateTime, String
+from sqlalchemy import Enum as SQLEnum
+from sqlalchemy.orm import Mapped, mapped_column
+
 from app.db.base import Base
+
 
 class Role(str, Enum):
     ADMIN = "ADMIN"

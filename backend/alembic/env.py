@@ -18,10 +18,11 @@ if config.config_file_name is not None:
 
 import os
 import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from app.db.models import Base
 from app.core.config import settings
+from app.db.models import Base
 
 target_metadata = Base.metadata
 

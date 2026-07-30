@@ -1,16 +1,16 @@
 import asyncio
-import random
 import logging
+import random
 from datetime import datetime, timezone
-from sqlalchemy.ext.asyncio import AsyncSession
+
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import AsyncSessionLocal
-from app.db.models.grid import Transformer
-from app.db.models.meter import SmartMeter, TelemetryReading
 from app.db.models.alert import Alert
-from app.services.ws_manager import manager
+from app.db.models.meter import SmartMeter, TelemetryReading
 from app.schemas.alert import TelemetryResponse
+from app.services.ws_manager import manager
 
 logger = logging.getLogger(__name__)
 

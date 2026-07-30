@@ -1,5 +1,7 @@
-from inference.predictor import InferencePredictor
 import numpy as np
+
+from inference.predictor import InferencePredictor
+
 
 def run():
     predictor = InferencePredictor(model_dir="models")
@@ -7,7 +9,7 @@ def run():
     try:
         res = predictor.predict(features)
         print("Success:", res)
-    except Exception as e:
+    except Exception:
         import traceback
         traceback.print_exc()
 

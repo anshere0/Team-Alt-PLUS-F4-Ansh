@@ -1,14 +1,22 @@
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Query, Depends, HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession
-from jose import jwt, JWTError
 import logging
 
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    Query,
+    WebSocket,
+    WebSocketDisconnect,
+)
+from jose import JWTError, jwt
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.core.config import settings
-from app.core.security import ALGORITHM
 from app.core.database import get_db
+from app.core.security import ALGORITHM
 from app.db.models.user import User
 from app.services.ws_manager import manager
-from sqlalchemy import select
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -52,7 +60,7 @@ async def websocket_endpoint(
         while True:
             # Keep loop alive to receive pings/messages from client
             # and gracefully handle disconnects
-            data = await websocket.receive_text()
+            await websocket.receive_text()
             
     except WebSocketDisconnect:
         manager.disconnect(websocket)

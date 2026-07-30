@@ -1,8 +1,11 @@
-from datetime import datetime, timezone
 import uuid
-from sqlalchemy import String, Float, ForeignKey, DateTime
+from datetime import datetime
+
+from sqlalchemy import DateTime, Float, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.db.base import Base
+
 
 class SmartMeter(Base):
     __tablename__ = "smart_meters"

@@ -5,13 +5,15 @@ import sys
 # Ensure backend directory is in path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.core.database import AsyncSessionLocal
-from app.db.models.user import User, Role
-from app.db.models.grid import Substation, Feeder, Transformer
-from app.db.models.meter import SmartMeter
 from app.core.security import get_password_hash
+from app.db.models.grid import Feeder, Substation, Transformer
+from app.db.models.meter import SmartMeter
+from app.db.models.user import Role, User
+
 
 async def seed_users(db: AsyncSession):
     # Check if admin already exists

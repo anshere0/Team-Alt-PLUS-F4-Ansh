@@ -1,5 +1,6 @@
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing import List
+
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "GridGuard AI Backend"
@@ -9,8 +10,9 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 10080
     DATABASE_URL: str
     DIRECT_URL: str | None = None
-    BACKEND_CORS_ORIGINS: List[str] = ["http://localhost:3000"]
+    BACKEND_CORS_ORIGINS: list[str] = ["http://localhost:3000"]
+    AI_SERVICE_URL: str = "http://ai:8001"
 
-    model_config = SettingsConfigDict(env_file=".env.backend", extra="ignore")
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
 settings = Settings()

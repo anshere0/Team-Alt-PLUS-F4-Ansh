@@ -1,7 +1,8 @@
-from fastapi import APIRouter, HTTPException
-from api.schemas import PredictRiskRequest, PredictLoadRequest, PredictionResponse
-from inference.predictor import InferencePredictor
 import numpy as np
+from fastapi import APIRouter, HTTPException
+
+from api.schemas import PredictionResponse, PredictLoadRequest, PredictRiskRequest
+from inference.predictor import InferencePredictor
 
 router = APIRouter()
 

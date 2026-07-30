@@ -1,10 +1,14 @@
-from datetime import datetime, timezone
 import uuid
-from sqlalchemy import String, Float, ForeignKey, DateTime, Enum as SQLEnum
-from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from datetime import datetime, timezone
 from enum import Enum
+
+from sqlalchemy import DateTime, Float, ForeignKey, String
+from sqlalchemy import Enum as SQLEnum
+from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.orm import Mapped, mapped_column
+
 from app.db.base import Base
+
 
 class AlertStatus(str, Enum):
     ACTIVE = "ACTIVE"

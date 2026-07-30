@@ -1,5 +1,7 @@
 from pydantic import BaseModel, ConfigDict
+
 from app.db.models.user import Role
+
 
 class LoginRequest(BaseModel):
     username: str

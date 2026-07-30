@@ -1,9 +1,10 @@
+import random
+
 import networkx as nx
+import numpy as np
 import torch
 from torch_geometric.data import Data
-from torch_geometric.utils import from_networkx
-import random
-import numpy as np
+
 
 def build_synthetic_grid_graph(num_substations=1, num_transformers=48, meters_per_transformer=10):
     """

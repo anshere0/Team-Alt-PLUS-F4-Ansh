@@ -1,21 +1,27 @@
 from app.db.base import Base
-from app.db.models.user import User, Role
-from app.db.models.grid import Substation, Feeder, Transformer
+from app.db.models.alert import (
+    Alert,
+    AlertStatus,
+    AuditLog,
+    Inspection,
+    InspectionStatus,
+)
+from app.db.models.grid import Feeder, Substation, Transformer
 from app.db.models.meter import SmartMeter, TelemetryReading
-from app.db.models.alert import Alert, Inspection, AuditLog, AlertStatus, InspectionStatus
+from app.db.models.user import Role, User
 
 __all__ = [
-    "Base",
-    "User",
-    "Role",
-    "Substation",
-    "Feeder",
-    "Transformer",
-    "SmartMeter",
-    "TelemetryReading",
     "Alert",
-    "Inspection",
-    "AuditLog",
     "AlertStatus",
+    "AuditLog",
+    "Base",
+    "Feeder",
+    "Inspection",
     "InspectionStatus",
+    "Role",
+    "SmartMeter",
+    "Substation",
+    "TelemetryReading",
+    "Transformer",
+    "User",
 ]

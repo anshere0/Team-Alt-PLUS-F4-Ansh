@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class DashboardSummary(BaseModel):
     total_substations: int
     total_feeders: int

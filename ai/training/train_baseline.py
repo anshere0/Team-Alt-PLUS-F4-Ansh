@@ -1,9 +1,12 @@
 import os
+
 import joblib
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
+
 from datasets.synthetic_theft import create_training_dataset
 from preprocessing.preprocessing import FeaturePreprocessor
+
 
 def train_baseline_model():
     print("Generating synthetic dataset...")

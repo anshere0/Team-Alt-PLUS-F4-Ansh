@@ -1,10 +1,11 @@
 import json
 import logging
+
 from openai import AsyncOpenAI
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
-from app.services import dashboard_service, alert_service
+from app.services import alert_service, dashboard_service
 
 logger = logging.getLogger(__name__)
 
@@ -97,4 +98,4 @@ async def process_chat(message: str, db: AsyncSession) -> str:
             
     except Exception as e:
         logger.error(f"OpenAI error: {e}")
-        return f"Error communicating with AI: {str(e)}"
+        return f"Error communicating with AI: {e!s}"

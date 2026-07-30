@@ -1,9 +1,11 @@
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
-from app.db.models.grid import Substation, Feeder, Transformer
-from app.db.models.meter import SmartMeter
+
 from app.db.models.alert import Alert
+from app.db.models.grid import Feeder, Substation, Transformer
+from app.db.models.meter import SmartMeter
 from app.schemas.dashboard import DashboardSummary
+
 
 async def get_dashboard_summary(db: AsyncSession) -> DashboardSummary:
     # Counts

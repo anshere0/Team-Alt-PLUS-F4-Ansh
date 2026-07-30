@@ -1,6 +1,7 @@
-from pydantic import BaseModel, ConfigDict
-from typing import Optional
 from datetime import datetime
+
+from pydantic import BaseModel, ConfigDict
+
 
 class AlertResponse(BaseModel):
     id: str
@@ -10,7 +11,7 @@ class AlertResponse(BaseModel):
     message: str
     is_resolved: bool
     created_at: datetime
-    resolved_at: Optional[datetime] = None
+    resolved_at: datetime | None = None
 
     model_config = ConfigDict(from_attributes=True)
     
@@ -24,7 +25,7 @@ class TelemetryResponse(BaseModel):
     current_a: float
     power_factor: float
     temperature_c: float
-    risk_score: Optional[float] = None
-    anomaly_type: Optional[str] = None
+    risk_score: float | None = None
+    anomaly_type: str | None = None
     
     model_config = ConfigDict(from_attributes=True)

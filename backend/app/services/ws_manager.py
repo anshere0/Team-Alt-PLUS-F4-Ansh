@@ -1,12 +1,13 @@
-from fastapi import WebSocket
-from typing import List, Dict, Any
 import logging
+from typing import Any
+
+from fastapi import WebSocket
 
 logger = logging.getLogger(__name__)
 
 class ConnectionManager:
     def __init__(self):
-        self.active_connections: List[WebSocket] = []
+        self.active_connections: list[WebSocket] = []
 
     async def connect(self, websocket: WebSocket):
         await websocket.accept()
@@ -18,10 +19,10 @@ class ConnectionManager:
             self.active_connections.remove(websocket)
             logger.info(f"Client disconnected. Active clients: {len(self.active_connections)}")
 
-    async def send_personal_message(self, message: Dict[str, Any], websocket: WebSocket):
+    async def send_personal_message(self, message: dict[str, Any], websocket: WebSocket):
         await websocket.send_json(message)
 
-    async def broadcast(self, message: Dict[str, Any]):
+    async def broadcast(self, message: dict[str, Any]):
         disconnected = []
         for connection in self.active_connections:
             try:

@@ -1,8 +1,9 @@
+
+import joblib
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
-import joblib
-from typing import Tuple
+
 
 class FeaturePreprocessor:
     def __init__(self, scaler_path: str = None):
@@ -15,7 +16,7 @@ class FeaturePreprocessor:
         features = np.array([load, temp, humidity])
         return np.nan_to_num(features, nan=0.0, posinf=0.0, neginf=0.0)
 
-    def fit_transform_df(self, df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
+    def fit_transform_df(self, df: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
         X = []
         y = []
         

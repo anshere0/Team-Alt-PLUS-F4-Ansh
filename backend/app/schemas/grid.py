@@ -1,6 +1,7 @@
-from pydantic import BaseModel, ConfigDict
-from typing import Optional
 from datetime import datetime
+
+from pydantic import BaseModel, ConfigDict
+
 
 class SubstationResponse(BaseModel):
     id: str
@@ -18,7 +19,7 @@ class FeederResponse(BaseModel):
     id: str
     substation_id: str
     code: str
-    name: Optional[str] = None
+    name: str | None = None
     nominal_voltage_kv: float
     current_load_kw: float
 
@@ -28,7 +29,7 @@ class TransformerResponse(BaseModel):
     id: str
     feeder_id: str
     code: str
-    name: Optional[str] = None
+    name: str | None = None
     capacity_kva: float
     phase_count: int
     health_index: float
@@ -39,8 +40,8 @@ class SmartMeterResponse(BaseModel):
     id: str
     transformer_id: str
     meter_number: str
-    consumer_name: Optional[str] = None
-    address: Optional[str] = None
+    consumer_name: str | None = None
+    address: str | None = None
     latitude: float
     longitude: float
     status: str

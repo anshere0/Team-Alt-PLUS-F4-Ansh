@@ -1,10 +1,13 @@
+import json
 import os
+
 import joblib
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+
 from datasets.synthetic_load import generate_load_forecast_dataset
 from preprocessing.preprocessing import FeaturePreprocessor
-import json
+
 
 def train_forecaster_model():
     print("Generating synthetic load dataset...")

@@ -1,8 +1,11 @@
+import os
+
 import torch
 import torch.nn.functional as F
+
 from datasets.graph_builder import build_synthetic_grid_graph
 from models.gnn_loss_detector import GridGraphSAGE
-import os
+
 
 def train_gnn():
     print("Building Synthetic Grid Graph...")
