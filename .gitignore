@@ -1,1 +1,51 @@
 docs/
+
+# Environment variables (CRITICAL TO IGNORE)
+.env
+.env.*
+!.env.example
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Node / Frontend (For when the frontend team pushes)
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+.gemini/
+
+# Logs and Databases
+*.log
+*.sqlite3
+*.db
+
+# Pytest / Coverage
+.pytest_cache/
+.coverage
+htmlcov/

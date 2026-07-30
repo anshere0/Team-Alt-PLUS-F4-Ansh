@@ -1,0 +1,61 @@
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Query, Depends, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
+from jose import jwt, JWTError
+import logging
+
+from app.core.config import settings
+from app.core.security import ALGORITHM
+from app.core.database import get_db
+from app.db.models.user import User
+from app.services.ws_manager import manager
+from sqlalchemy import select
+
+router = APIRouter()
+logger = logging.getLogger(__name__)
+
+async def get_user_from_token(token: str, db: AsyncSession) -> User:
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Invalid token")
+            
+        result = await db.execute(select(User).where(User.id == user_id))
+        user = result.scalars().first()
+        if user is None:
+            raise HTTPException(status_code=401, detail="User not found")
+        return user
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+@router.websocket("/stream")
+async def websocket_endpoint(
+    websocket: WebSocket,
+    token: str = Query(..., description="JWT Bearer Token"),
+    db: AsyncSession = Depends(get_db)
+):
+    # Authenticate before accepting
+    try:
+        user = await get_user_from_token(token, db)
+    except HTTPException:
+        await websocket.close(code=1008) # Policy violation
+        return
+
+    await manager.connect(websocket)
+    try:
+        # Acknowledge connection
+        await manager.send_personal_message(
+            {"type": "CONNECTION_ACK", "data": {"message": f"Connected as {user.username}"}}, 
+            websocket
+        )
+        
+        while True:
+            # Keep loop alive to receive pings/messages from client
+            # and gracefully handle disconnects
+            data = await websocket.receive_text()
+            
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+    except Exception as e:
+        logger.error(f"WebSocket error: {e}")
+        manager.disconnect(websocket)
