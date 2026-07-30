@@ -51,23 +51,23 @@ A pipeline designed to digitize legacy workflows. Utility operators can upload l
 ## Interfaces
 
 ### Executive Command Dashboard
-Aggregated KPIs and active loss tracking computed directly from the PostgreSQL database.
+The primary landing view for utility administrators. It aggregates KPIs directly from the PostgreSQL database, providing a live snapshot of active smart meters, grid health, and total estimated financial loss across all active theft alerts. The dashboard is fully responsive and recalculates metrics in real time.
 <img src="./docs/images/1_dashboard.png" alt="Executive Dashboard" width="100%" />
 
 ### Live Telemetry and AT&C Analysis
-Real-time energy draw analysis paired with a live WebSocket alert feed.
+A dynamic 24-hour analysis comparing expected energy draw versus actual consumption. This view is paired with an asynchronous WebSocket alert feed that pushes critical AI classifications directly to the dispatcher, bypassing the need for manual page refreshes.
 <img src="./docs/images/2_charts.png" alt="Charts and Alerts" width="100%" />
 
 ### Dynamic Grid Topology Viewer
-Hierarchical tracking of anomalies across the distribution network.
+A highly interactive, hierarchical mapping of the electrical distribution network. Built using React Flow, it allows dispatchers to physically trace anomalies from the main Substation down to the exact Smart Meter. Selecting a flagged node reveals AI confidence scores and anomaly severity.
 <img src="./docs/images/3_topology.png" alt="Grid Topology" width="100%" />
 
 ### Field Inspector Worklist
-Prioritized dispatch table driven by the AI risk score and estimated financial loss.
+A targeted dispatch table designed to replace blind field audits. By sorting AI-detected anomalies by risk score and severity, field inspectors are deployed only where theft is highly probable, drastically reducing operational costs and maximizing revenue recovery.
 <img src="./docs/images/4_worklist.png" alt="Inspector Worklist" width="100%" />
 
 ### Automated Data Ingestion
-Drag-and-drop interface for parsing offline telemetry and field reports.
+A legacy system bridge that digitizes historical offline records. Utility operators can drag and drop PDF field audits or batch CSV telemetry files. The backend immediately parses these documents, extracts threat intelligence, and synchronizes the findings into the central database.
 <img src="./docs/images/5_ingestion.png" alt="Data Ingestion" width="100%" />
 
 ## Installation and Execution
