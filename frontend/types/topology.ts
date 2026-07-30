@@ -10,6 +10,8 @@ export interface TopologyNode {
     capacity_kva?: number;
     connected_consumers?: number;
     current_load_kw?: number;
+    anomaly_type?: string;
+    financial_loss?: number;
   };
 }
 
