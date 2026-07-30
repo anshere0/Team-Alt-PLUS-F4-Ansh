@@ -20,6 +20,7 @@ class SmartMeter(Base):
     status: Mapped[str] = mapped_column(String, default="ACTIVE")
     
     telemetry_readings: Mapped[list["TelemetryReading"]] = relationship("TelemetryReading", back_populates="meter", cascade="all, delete-orphan")
+    predictions: Mapped[list["Prediction"]] = relationship("Prediction", back_populates="meter", cascade="all, delete-orphan")
 
 class TelemetryReading(Base):
     __tablename__ = "telemetry_readings"

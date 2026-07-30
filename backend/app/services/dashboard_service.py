@@ -59,41 +59,54 @@ async def get_dashboard_summary(db: AsyncSession) -> DashboardSummary:
         last_updated=now_iso
     )
 
-    # --- Missing Metrics Pending Future Phases ---
+    # --- AI & Prediction Metrics (Phase 2) ---
+    from app.db.models.prediction import Prediction
+    from app.db.models.meter import TelemetryReading
     
-    logger.info("Dashboard Service: today_energy_loss_mwh is missing backend support. Deferred to Phase 2.")
-    today_energy_loss_mwh = MetricProvenance(
-        value=None,
-        status="Unavailable",
-        source="Not Implemented Yet",
-        reason="Awaiting Prediction Engine (Phase 2)",
-        last_updated=now_iso
-    )
-
-    logger.info("Dashboard Service: financial_loss_at_risk is missing backend support. Deferred to Phase 2.")
+    # Financial Loss At Risk
+    financial_loss = (await db.execute(select(func.sum(Prediction.financial_loss_estimate)))).scalar() or 0.0
     financial_loss_at_risk = MetricProvenance(
-        value=None,
-        status="Unavailable",
-        source="Not Implemented Yet",
-        reason="Awaiting Prediction Engine (Phase 2)",
+        value=round(float(financial_loss), 2),
+        status="Available",
+        source="database",
+        table="predictions",
+        calculated_from="SUM(financial_loss_estimate)",
         last_updated=now_iso
     )
-
-    logger.info("Dashboard Service: ai_confidence_score is missing backend support. Deferred to Phase 3.")
+    
+    # AI Confidence Score
+    avg_conf = (await db.execute(select(func.avg(Prediction.confidence)))).scalar()
     ai_confidence_score = MetricProvenance(
-        value=None,
-        status="Unavailable",
-        source="Not Implemented Yet",
-        reason="Awaiting AI Integration (Phase 3)",
+        value=round(float(avg_conf) * 100, 1) if avg_conf else 0.0,
+        status="Available",
+        source="database",
+        table="predictions",
+        calculated_from="AVG(confidence)",
+        last_updated=now_iso
+    )
+    
+    # Energy Loss (MWh) - sum of active power where active > expected (simplified)
+    # Since we lack a complex join right now, we can approximate it from TelemetryReading
+    loss_kwh = (await db.execute(
+        select(func.sum(TelemetryReading.active_power_kwh - TelemetryReading.expected_power_kwh))
+        .where(TelemetryReading.active_power_kwh > TelemetryReading.expected_power_kwh)
+    )).scalar() or 0.0
+    
+    today_energy_loss_mwh = MetricProvenance(
+        value=round(float(loss_kwh) / 1000.0, 4), # kWh to MWh
+        status="Available",
+        source="database",
+        table="telemetry_readings",
+        calculated_from="SUM(active - expected) / 1000",
         last_updated=now_iso
     )
 
-    logger.info("Dashboard Service: revenue_recovered_ytd is missing backend support. Deferred to Phase 2.")
+    logger.info("Dashboard Service: revenue_recovered_ytd is missing backend support. Deferred to Phase 5.")
     revenue_recovered_ytd = MetricProvenance(
         value=None,
         status="Unavailable",
         source="Not Implemented Yet",
-        reason="Awaiting Financials (Phase 2)",
+        reason="Awaiting Financials (Phase 5)",
         last_updated=now_iso
     )
 
