@@ -1,0 +1,11 @@
+{
+    "version": "v1.0.0",
+    "accuracy": 0.9993333333333333,
+    "precision": 1.0,
+    "recall": 0.995,
+    "features": [
+        "currentLoad",
+        "temperature",
+        "humidity"
+    ]
+}

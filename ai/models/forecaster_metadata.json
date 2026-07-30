@@ -1,0 +1,11 @@
+{
+    "version": "v1.0.0",
+    "mae": 2.0151799670421395,
+    "rmse": 2.5328048130071705,
+    "r2": 0.9811227880705954,
+    "features": [
+        "currentLoad",
+        "temperature",
+        "humidity"
+    ]
+}
