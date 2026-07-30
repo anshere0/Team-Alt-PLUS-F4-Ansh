@@ -3,8 +3,13 @@
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { Map, Layers, Zap, AlertTriangle, ArrowRight } from 'lucide-react';
-import { MOCK_TELEMETRY, MOCK_SHAP_EXPLANATION } from '@/services/mockData';
 import { useThemeStore } from '@/store/themeStore';
+
+// TODO (Phase 3): Replace inline mocks with real GIS API fetch
+const MOCK_SHAP_EXPLANATION = {
+  ai_summary: 'High theft probability (94%) detected due to 78% drop in peak-hour active consumption.',
+  contributions: []
+};
 
 // Dynamically import Leaflet components (SSR disabled)
 const MapContainer = dynamic(

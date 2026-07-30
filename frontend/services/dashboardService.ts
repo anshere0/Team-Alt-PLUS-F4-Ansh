@@ -1,22 +1,53 @@
 import { apiClient } from './apiClient';
 import { API_ENDPOINTS } from '../constants/api';
-import { ExecutiveDashboardSummary, ATCDataPoint } from '../types/dashboard';
-import { MOCK_DASHBOARD_SUMMARY, MOCK_ATC_TREND } from './mockData';
+import { ExecutiveDashboardSummary, ATCDataPoint, MetricProvenance, KPIMetric } from '../types/dashboard';
+
+interface BackendDashboardSummary {
+  active_smart_meters: MetricProvenance;
+  active_feeders: MetricProvenance;
+  transformer_health_index: MetricProvenance;
+  today_energy_loss_mwh: MetricProvenance;
+  financial_loss_at_risk: MetricProvenance;
+  detected_theft_nodes: MetricProvenance;
+  ai_confidence_score: MetricProvenance;
+  revenue_recovered_ytd: MetricProvenance;
+}
+
+const mapMetric = (id: string, title: string, unit: string | undefined, backendData: MetricProvenance): KPIMetric => {
+  return {
+    id,
+    title,
+    value: backendData.status === 'Available' ? backendData.value : null,
+    unit: backendData.status === 'Available' ? unit : undefined,
+    change_percentage: 0, // Pending historical data
+    trend: 'STABLE',
+    status: backendData.status === 'Available' ? 'NOMINAL' : 'UNAVAILABLE',
+    last_updated: backendData.last_updated || new Date().toISOString(),
+    description: backendData.reason || backendData.calculated_from || backendData.source,
+    provenance: backendData
+  };
+};
 
 export const dashboardService = {
   getSummary: async (): Promise<ExecutiveDashboardSummary> => {
-    try {
-      return await apiClient.get<any, ExecutiveDashboardSummary>(API_ENDPOINTS.DASHBOARD.SUMMARY);
-    } catch {
-      return MOCK_DASHBOARD_SUMMARY;
-    }
+    const response = await apiClient.get<BackendDashboardSummary>(API_ENDPOINTS.DASHBOARD.SUMMARY);
+    const data = response.data;
+    
+    return {
+      active_smart_meters: mapMetric('active_smart_meters', 'Active Smart Meters', undefined, data.active_smart_meters),
+      active_feeders: mapMetric('active_feeders', 'Active Feeders', undefined, data.active_feeders),
+      transformer_health_index: mapMetric('transformer_health_index', 'Transformer Health Index', undefined, data.transformer_health_index),
+      today_energy_loss_mwh: mapMetric('today_energy_loss_mwh', "Today's Energy Loss", 'MWh', data.today_energy_loss_mwh),
+      financial_loss_at_risk: mapMetric('financial_loss_at_risk', 'Financial Loss at Risk', '$', data.financial_loss_at_risk),
+      detected_theft_nodes: mapMetric('detected_theft_nodes', 'Detected Theft Nodes', undefined, data.detected_theft_nodes),
+      ai_confidence_score: mapMetric('ai_confidence_score', 'AI Confidence Score', '%', data.ai_confidence_score),
+      revenue_recovered_ytd: mapMetric('revenue_recovered_ytd', 'Revenue Recovered YTD', '$', data.revenue_recovered_ytd),
+    };
   },
 
   getATCTrend: async (): Promise<ATCDataPoint[]> => {
-    try {
-      return await apiClient.get<any, ATCDataPoint[]>(API_ENDPOINTS.DASHBOARD.STATISTICS);
-    } catch {
-      return MOCK_ATC_TREND;
-    }
+    // ATCTrend is pending Phase 2 telemetry tables. We return an empty array or handle error state.
+    // We remove the MOCK_ATC_TREND completely.
+    return [];
   },
 };

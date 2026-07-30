@@ -3,7 +3,17 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { Network, Zap, ShieldAlert, Cpu } from 'lucide-react';
-import { MOCK_TOPOLOGY_DATA, MOCK_SHAP_EXPLANATION } from '@/services/mockData';
+import { GridTopologyResponse } from '@/types/topology';
+
+// TODO (Phase 3): Replace inline mocks with real Topology API fetch
+const MOCK_TOPOLOGY_DATA: GridTopologyResponse = {
+  nodes: [],
+  edges: []
+};
+
+const MOCK_SHAP_EXPLANATION = {
+  contributions: [] as any[]
+};
 
 // Dynamically import React Flow for SSR safety
 const ReactFlow = dynamic(() => import('reactflow').then((mod) => mod.default), { ssr: false });

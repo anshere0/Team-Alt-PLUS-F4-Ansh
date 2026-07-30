@@ -1,13 +1,24 @@
+export interface MetricProvenance {
+  value: any;
+  status: 'Available' | 'Unavailable' | string;
+  source: string;
+  table?: string;
+  calculated_from?: string;
+  last_updated?: string;
+  reason?: string;
+}
+
 export interface KPIMetric {
   id: string;
   title: string;
-  value: string | number;
+  value: string | number | null;
   unit?: string;
   change_percentage: number;
   trend: 'UP' | 'DOWN' | 'STABLE';
-  status: 'NOMINAL' | 'WARNING' | 'CRITICAL' | 'INFO';
+  status: 'NOMINAL' | 'WARNING' | 'CRITICAL' | 'INFO' | 'UNAVAILABLE';
   last_updated: string;
   description?: string;
+  provenance?: MetricProvenance;
 }
 
 export interface ExecutiveDashboardSummary {

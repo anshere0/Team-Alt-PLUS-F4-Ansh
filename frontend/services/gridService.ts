@@ -2,24 +2,23 @@ import { apiClient } from './apiClient';
 import { API_ENDPOINTS } from '../constants/api';
 import { SmartMeterTelemetry, ShapExplanationResponse } from '../types/telemetry';
 import { GridTopologyResponse } from '../types/topology';
-import { MOCK_TELEMETRY, MOCK_SHAP_EXPLANATION, MOCK_TOPOLOGY_DATA } from './mockData';
 
 export const gridService = {
   getTopology: async (): Promise<GridTopologyResponse> => {
     try {
       return await apiClient.get<any, GridTopologyResponse>(API_ENDPOINTS.TOPOLOGY);
     } catch {
-      return MOCK_TOPOLOGY_DATA;
+      return { nodes: [], edges: [] };
     }
   },
 
-  getMeterTelemetry: async (meterId: string): Promise<{ telemetry: SmartMeterTelemetry; shap: ShapExplanationResponse }> => {
+  getMeterTelemetry: async (meterId: string): Promise<{ telemetry: SmartMeterTelemetry | null; shap: ShapExplanationResponse | null }> => {
     try {
       return await apiClient.get(`/api/v1/meters/${meterId}`);
     } catch {
       return {
-        telemetry: { ...MOCK_TELEMETRY, meter_id: meterId },
-        shap: MOCK_SHAP_EXPLANATION,
+        telemetry: null,
+        shap: null,
       };
     }
   },

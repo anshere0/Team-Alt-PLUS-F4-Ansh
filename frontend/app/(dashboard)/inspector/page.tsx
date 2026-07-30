@@ -2,7 +2,26 @@
 
 import React, { useState } from 'react';
 import { ClipboardList, UserCheck, FileText, Filter } from 'lucide-react';
-import { MOCK_ALERTS } from '@/services/mockData';
+import { GridAlert } from '@/types/alert';
+
+// TODO (Phase 2): Replace this inline mock with real Alert API fetch
+const MOCK_ALERTS: GridAlert[] = [
+  {
+    alert_id: 'alt-101',
+    meter_id: 'MTR-44822',
+    consumer_name: 'Apex Industrial Complex',
+    transformer_id: 'TR-102',
+    feeder_id: 'FDR-04',
+    substation_id: 'SUB-01',
+    severity: 'CRITICAL',
+    anomaly_type: 'PARTIAL_BYPASS',
+    risk_score: 0.94,
+    financial_loss_estimate: 84500,
+    message: 'Sudden 78% drop in active draw during peak hours without load shift.',
+    timestamp: new Date().toISOString(),
+    is_acknowledged: false,
+  }
+];
 
 export default function InspectorPage() {
   const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
