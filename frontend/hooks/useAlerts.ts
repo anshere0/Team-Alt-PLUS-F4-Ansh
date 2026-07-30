@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { alertService } from '../services/alertService';
 import { useNotificationStore } from '../store/notificationStore';
 
 export function useAlerts() {
-  const { alerts, addAlert, acknowledgeAlert } = useNotificationStore();
+  const { alerts, addAlert, acknowledgeAlert, clearAlerts } = useNotificationStore();
+  const seeded = useRef(false);
 
   const query = useQuery({
     queryKey: ['grid-alerts'],
@@ -13,10 +14,13 @@ export function useAlerts() {
   });
 
   useEffect(() => {
-    if (query.data && query.data.length > 0 && alerts.length === 0) {
+    // Seed backend alerts on first successful fetch, replacing any WS-generated placeholder alerts
+    if (query.data && query.data.length > 0 && !seeded.current) {
+      seeded.current = true;
+      clearAlerts();
       query.data.forEach((alert) => addAlert(alert));
     }
-  }, [query.data, alerts.length, addAlert]);
+  }, [query.data, addAlert, clearAlerts]);
 
   return {
     alerts,

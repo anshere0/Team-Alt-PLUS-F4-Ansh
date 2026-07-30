@@ -98,15 +98,44 @@ async def parse_csv_telemetry(file: UploadFile, db: AsyncSession) -> dict:
         raise HTTPException(status_code=400, detail=f"Failed to parse CSV: {str(e)}")
 
 async def parse_pdf_audit(file: UploadFile, db: AsyncSession) -> dict:
-    """Mock parser for PDF field audits. In a real system, this would extract text."""
-    # For now, just simulate a successful processing
+    """Mock parser for PDF field audits. In a real system, this would use OCR/NLP extraction."""
     content = await file.read()
+    file_size_kb = len(content) / 1024
+    
+    # Simulate AI-extracted anomalies from the PDF audit document
+    anomalies = [
+        {
+            "meter_id": "MTR-A1-01-3",
+            "consumer_name": "Apex Industrial Complex",
+            "anomaly_type": "PARTIAL_BYPASS",
+            "risk_score": 0.94,
+            "financial_loss": 84500,
+            "description": "CT ratio bypass detected during field inspection. Billing discrepancy of 78kWh/day."
+        },
+        {
+            "meter_id": "MTR-A1-02-2",
+            "consumer_name": "Delta Steel Industries",
+            "anomaly_type": "DIRECT_HOOKING",
+            "risk_score": 0.91,
+            "financial_loss": 120000,
+            "description": "Unauthorized parallel tapping found at junction box. Phase current mismatch 32%."
+        },
+        {
+            "meter_id": "MTR-A2-01-1",
+            "consumer_name": "Prestige Residential Hub",
+            "anomaly_type": "METER_FREEZE",
+            "risk_score": 0.87,
+            "financial_loss": 45000,
+            "description": "Digital display tampered — meter frozen at 4,221 kWh for 14 consecutive days."
+        },
+    ]
     
     return {
         "success": True,
         "data": {
-            "records_processed": 1,
-            "anomalies_found": 1,
-            "message": f"Successfully parsed PDF audit report. Extracted 1 critical anomaly."
+            "records_processed": 3,
+            "anomalies_found": 3,
+            "anomalies": anomalies,
+            "message": f"Successfully parsed PDF audit report ({file_size_kb:.1f} KB). AI engine extracted 3 critical anomalies from field inspection data."
         }
     }
