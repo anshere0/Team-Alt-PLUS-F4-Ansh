@@ -9,21 +9,21 @@ export const LiveConnectionBadge: React.FC = () => {
 
   return (
     <div
-      className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-medium backdrop-blur-md transition-all ${
+      className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
         isWsConnected
-          ? 'bg-emerald-950/40 text-emerald-400 border border-emerald-500/20'
-          : 'bg-amber-950/40 text-amber-400 border border-amber-500/20'
+          ? 'bg-[var(--tint-emerald-bg)] text-[var(--accent-emerald)] border border-[var(--tint-emerald-border)]'
+          : 'bg-[var(--tint-amber-bg)] text-[var(--accent-amber)] border border-[var(--tint-amber-border)]'
       }`}
     >
       <span className="relative flex h-1.5 w-1.5">
         <span
           className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-            isWsConnected ? 'bg-emerald-400' : 'bg-amber-400'
+            isWsConnected ? 'bg-[var(--accent-emerald)]' : 'bg-[var(--accent-amber)]'
           }`}
         />
         <span
           className={`relative inline-flex rounded-full h-1.5 w-1.5 ${
-            isWsConnected ? 'bg-emerald-500' : 'bg-amber-500'
+            isWsConnected ? 'bg-[var(--accent-emerald)]' : 'bg-[var(--accent-amber)]'
           }`}
         />
       </span>

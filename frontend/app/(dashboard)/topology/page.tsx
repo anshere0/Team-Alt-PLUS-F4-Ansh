@@ -17,14 +17,14 @@ export default function TopologyPage() {
         <div
           className={`p-3 rounded-xl border backdrop-blur-md font-mono text-xs ${
             node.status === 'critical'
-              ? 'bg-red-950/80 border-red-500 text-red-300 glow-crimson-border animate-pulse'
+              ? 'bg-[var(--tint-rose-bg)] border-[var(--accent-rose)] text-[var(--accent-rose)] animate-pulse'
               : node.status === 'warning'
-              ? 'bg-amber-950/80 border-amber-500 text-amber-300'
-              : 'bg-slate-900/80 border-cyan-500/40 text-cyan-300'
+              ? 'bg-[var(--tint-amber-bg)] border-[var(--accent-amber)] text-[var(--accent-amber)]'
+              : 'bg-[var(--bg-surface)] border-[var(--tint-blue-border)] text-[var(--accent-blue)]'
           }`}
         >
           <div className="font-bold flex items-center gap-1.5">
-            <Zap className="w-3.5 h-3.5 text-cyan-400" />
+            <Zap className="w-3.5 h-3.5 text-[var(--accent-blue)]" />
             {node.label}
           </div>
           <div className="text-[10px] opacity-80 mt-1">
@@ -41,20 +41,20 @@ export default function TopologyPage() {
     target: edge.target,
     animated: true,
     style: {
-      stroke: edge.status === 'high_loss' ? '#FF2A5F' : '#00F0FF',
+      stroke: edge.status === 'high_loss' ? '#f43f5e' : '#3b82f6',
       strokeWidth: 2,
     },
   }));
 
   return (
-    <div className="space-y-6 pb-12">
-      <div className="flex items-center justify-between border-b border-slate-800/80 pb-4">
+    <div className="space-y-6 pb-12 font-sans">
+      <div className="flex items-center justify-between border-b border-[var(--border-default)] pb-4">
         <div>
-          <h1 className="text-xl font-bold tracking-wide text-white flex items-center gap-2">
-            <Network className="w-5 h-5 text-cyan-400" />
+          <h1 className="text-xl font-bold tracking-wide text-[var(--text-primary)] flex items-center gap-2">
+            <Network className="w-5 h-5 text-[var(--accent-blue)]" />
             DYNAMIC GRID TOPOLOGY VIEWER
           </h1>
-          <p className="text-xs text-slate-400 font-mono mt-0.5">
+          <p className="text-xs text-[var(--text-muted)] font-mono mt-0.5">
             Hierarchical flow graph: Substation (33kV) → Feeder (11kV) → Transformer → Consumer Smart Meters
           </p>
         </div>
@@ -62,55 +62,55 @@ export default function TopologyPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[600px]">
         {/* Topology Graph Canvas */}
-        <div className="lg:col-span-8 glass-panel p-2 overflow-hidden relative border-cyan-500/30 glow-cyan-border">
-          <div className="w-full h-full rounded-xl overflow-hidden bg-slate-950/90 relative">
+        <div className="lg:col-span-8 glass-panel p-2 overflow-hidden relative border-[var(--border-default)]">
+          <div className="w-full h-full rounded-xl overflow-hidden bg-[var(--bg-inset)] relative">
             <ReactFlow nodes={initialNodes} edges={initialEdges} fitView />
           </div>
         </div>
 
         {/* Node Deep-Dive Panel */}
         <div className="lg:col-span-4 glass-panel p-5 space-y-4 overflow-y-auto">
-          <div className="border-b border-slate-800 pb-3 flex items-center justify-between">
-            <h3 className="font-bold text-sm text-white flex items-center gap-2">
-              <ShieldAlert className="w-4 h-4 text-red-400" />
+          <div className="border-b border-[var(--border-default)] pb-3 flex items-center justify-between">
+            <h3 className="font-bold text-sm text-[var(--text-primary)] flex items-center gap-2">
+              <ShieldAlert className="w-4 h-4 text-[var(--accent-rose)]" />
               CRITICAL ANOMALY NODE
             </h3>
-            <span className="text-[10px] font-mono text-red-400 px-2 py-0.5 rounded-full bg-red-950 border border-red-500/40">
+            <span className="text-[10px] font-mono text-[var(--accent-rose)] px-2 py-0.5 rounded-full bg-[var(--tint-rose-bg)] border border-[var(--tint-rose-border)]">
               TR-102 / MTR-44822
             </span>
           </div>
 
           <div className="space-y-3 font-mono text-xs">
-            <div className="glass-panel p-3 bg-slate-900/60 flex items-center justify-between">
-              <span className="text-slate-400">Node Type:</span>
-              <span className="text-cyan-400 font-bold">Transformer &amp; Meter</span>
+            <div className="glass-panel p-3 bg-[var(--bg-raised)] flex items-center justify-between">
+              <span className="text-[var(--text-muted)]">Node Type:</span>
+              <span className="text-[var(--accent-blue)] font-bold">Transformer &amp; Meter</span>
             </div>
-            <div className="glass-panel p-3 bg-slate-900/60 flex items-center justify-between">
-              <span className="text-slate-400">Calculated Line Loss:</span>
-              <span className="text-red-400 font-bold">32.8% Unmetered</span>
+            <div className="glass-panel p-3 bg-[var(--bg-raised)] flex items-center justify-between">
+              <span className="text-[var(--text-muted)]">Calculated Line Loss:</span>
+              <span className="text-[var(--accent-rose)] font-bold">32.8% Unmetered</span>
             </div>
-            <div className="glass-panel p-3 bg-slate-900/60 flex items-center justify-between">
-              <span className="text-slate-400">SHAP Risk Score:</span>
-              <span className="text-red-400 font-bold">0.94 / 1.00</span>
+            <div className="glass-panel p-3 bg-[var(--bg-raised)] flex items-center justify-between">
+              <span className="text-[var(--text-muted)]">SHAP Risk Score:</span>
+              <span className="text-[var(--accent-rose)] font-bold">0.94 / 1.00</span>
             </div>
           </div>
 
           {/* SHAP Waterfall Preview */}
-          <div className="border-t border-slate-800 pt-3 space-y-2">
-            <p className="text-[11px] font-semibold text-cyan-300 flex items-center gap-1.5">
-              <Cpu className="w-3.5 h-3.5 text-cyan-400" />
+          <div className="border-t border-[var(--border-default)] pt-3 space-y-2">
+            <p className="text-[11px] font-semibold text-[var(--accent-indigo)] flex items-center gap-1.5">
+              <Cpu className="w-3.5 h-3.5 text-[var(--accent-indigo)]" />
               SHAP FEATURE CONTRIBUTIONS
             </p>
             <div className="space-y-2 pt-1">
               {MOCK_SHAP_EXPLANATION.contributions.map((c, idx) => (
-                <div key={idx} className="glass-panel p-2.5 bg-slate-900/40 text-[11px] space-y-1">
+                <div key={idx} className="glass-panel p-2.5 bg-[var(--bg-raised)] text-[11px] space-y-1">
                   <div className="flex justify-between font-mono">
-                    <span className="text-slate-300 font-medium">{c.feature_name}</span>
-                    <span className={c.shap_score > 0 ? 'text-red-400 font-bold' : 'text-emerald-400 font-bold'}>
+                    <span className="text-[var(--text-secondary)] font-medium">{c.feature_name}</span>
+                    <span className={c.shap_score > 0 ? 'text-[var(--accent-rose)] font-bold' : 'text-[var(--accent-emerald)] font-bold'}>
                       {c.shap_score > 0 ? `+${c.shap_score}` : c.shap_score}
                     </span>
                   </div>
-                  <p className="text-[10px] text-slate-500 leading-tight">{c.description}</p>
+                  <p className="text-[10px] text-[var(--text-muted)] leading-tight">{c.description}</p>
                 </div>
               ))}
             </div>

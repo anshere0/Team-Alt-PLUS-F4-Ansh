@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { Map, Layers, Zap, AlertTriangle, ArrowRight } from 'lucide-react';
 import { MOCK_TELEMETRY, MOCK_SHAP_EXPLANATION } from '@/services/mockData';
+import { useThemeStore } from '@/store/themeStore';
 
 // Dynamically import Leaflet components (SSR disabled)
 const MapContainer = dynamic(
@@ -25,25 +26,29 @@ const Popup = dynamic(
 
 export default function GISMapPage() {
   const [selectedPin, setSelectedPin] = useState<string | null>('MTR-44822');
+  const theme = useThemeStore((s) => s.theme);
+  const tileUrl = theme === 'dark' 
+    ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+    : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
 
   return (
-    <div className="space-y-6 pb-12">
-      <div className="flex items-center justify-between border-b border-slate-800/80 pb-4">
+    <div className="space-y-6 pb-12 font-sans">
+      <div className="flex items-center justify-between border-b border-[var(--border-default)] pb-4">
         <div>
-          <h1 className="text-xl font-bold tracking-wide text-white flex items-center gap-2">
-            <Map className="w-5 h-5 text-cyan-400" />
+          <h1 className="text-xl font-bold tracking-wide text-[var(--text-primary)] flex items-center gap-2">
+            <Map className="w-5 h-5 text-[var(--accent-blue)]" />
             GIS SPATIAL LOSS HEATMAP
           </h1>
-          <p className="text-xs text-slate-400 font-mono mt-0.5">
+          <p className="text-xs text-[var(--text-muted)] font-mono mt-0.5">
             Geospatial distribution of unmetered AT&C energy losses & high-risk smart meter clusters
           </p>
         </div>
 
         <div className="flex items-center gap-2 text-xs font-mono">
-          <span className="px-2.5 py-1 rounded-full bg-red-950/80 border border-red-500/40 text-red-400">
+          <span className="px-2.5 py-1 rounded-full bg-[var(--tint-rose-bg)] border border-[var(--tint-rose-border)] text-[var(--accent-rose)]">
             ● RED: Theft Zone (&gt;30% Loss)
           </span>
-          <span className="px-2.5 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-400">
+          <span className="px-2.5 py-1 rounded-full bg-[var(--tint-emerald-bg)] border border-[var(--tint-emerald-border)] text-[var(--accent-emerald)]">
             ● GREEN: Nominal Grid
           </span>
         </div>
@@ -51,15 +56,15 @@ export default function GISMapPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[600px]">
         {/* Map Container */}
-        <div className="lg:col-span-8 glass-panel p-2 overflow-hidden relative border-cyan-500/20">
-          <div className="w-full h-full rounded-xl overflow-hidden bg-slate-950 relative">
+        <div className="lg:col-span-8 glass-panel p-2 overflow-hidden relative border-[var(--border-default)]">
+          <div className="w-full h-full rounded-xl overflow-hidden bg-[var(--bg-inset)] relative">
             <MapContainer
               center={[28.6139, 77.209]}
               zoom={13}
-              style={{ width: '100%', height: '100%', backgroundColor: '#07090E' }}
+              style={{ width: '100%', height: '100%', backgroundColor: 'var(--map-bg)' }}
             >
               <TileLayer
-                url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                url={tileUrl}
                 attribution='&copy; <a href="https://carto.com/">CARTO</a>'
               />
               <Marker position={[28.6139, 77.209]}>
@@ -76,41 +81,41 @@ export default function GISMapPage() {
 
         {/* GIS Node Inspect Drawer */}
         <div className="lg:col-span-4 glass-panel p-5 space-y-4 overflow-y-auto">
-          <div className="border-b border-slate-800 pb-3 flex items-center justify-between">
-            <h3 className="font-bold text-sm text-white flex items-center gap-2">
-              <Zap className="w-4 h-4 text-cyan-400" />
-              PIN TELEMETRY DRILLDOWN
+          <div className="border-b border-[var(--border-default)] pb-3 flex items-center justify-between">
+            <h3 className="font-bold text-sm text-[var(--text-primary)] flex items-center gap-2">
+              <Zap className="w-4 h-4 text-[var(--accent-blue)]" />
+              Meter Details &amp; Diagnostics
             </h3>
-            <span className="text-[10px] font-mono text-cyan-400 px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-500/30">
+            <span className="text-[10px] font-mono text-[var(--accent-blue)] px-2 py-0.5 rounded-full bg-[var(--tint-blue-bg)] border border-[var(--tint-blue-border)]">
               MTR-44822
             </span>
           </div>
 
           <div className="space-y-3 font-mono text-xs">
-            <div className="glass-panel p-3 bg-slate-900/60 flex items-center justify-between">
-              <span className="text-slate-400">Consumer:</span>
-              <span className="font-bold text-white">Apex Industrial Complex</span>
+            <div className="glass-panel p-3 bg-[var(--bg-raised)] flex items-center justify-between">
+              <span className="text-[var(--text-muted)]">Consumer:</span>
+              <span className="font-bold text-[var(--text-primary)]">Apex Industrial Complex</span>
             </div>
-            <div className="glass-panel p-3 bg-slate-900/60 flex items-center justify-between">
-              <span className="text-slate-400">Transformer ID:</span>
-              <span className="text-cyan-400">TR-102 (500 kVA)</span>
+            <div className="glass-panel p-3 bg-[var(--bg-raised)] flex items-center justify-between">
+              <span className="text-[var(--text-muted)]">Transformer ID:</span>
+              <span className="text-[var(--accent-blue)]">TR-102 (500 kVA)</span>
             </div>
-            <div className="glass-panel p-3 bg-slate-900/60 flex items-center justify-between">
-              <span className="text-slate-400">Risk Score:</span>
-              <span className="text-red-400 font-bold">0.94 (CRITICAL THEFT)</span>
+            <div className="glass-panel p-3 bg-[var(--bg-raised)] flex items-center justify-between">
+              <span className="text-[var(--text-muted)]">Risk Score:</span>
+              <span className="text-[var(--accent-rose)] font-bold">0.94 (CRITICAL THEFT)</span>
             </div>
-            <div className="glass-panel p-3 bg-slate-900/60 flex items-center justify-between">
-              <span className="text-slate-400">Active Power Draw:</span>
-              <span className="text-white">1.2 kWh / 5.4 kWh Exp</span>
+            <div className="glass-panel p-3 bg-[var(--bg-raised)] flex items-center justify-between">
+              <span className="text-[var(--text-muted)]">Active Power Draw:</span>
+              <span className="text-[var(--text-primary)]">1.2 kWh / 5.4 kWh Exp</span>
             </div>
           </div>
 
-          <div className="border-t border-slate-800 pt-3 space-y-2">
-            <p className="text-[11px] font-semibold text-purple-300 flex items-center gap-1.5">
-              <AlertTriangle className="w-3.5 h-3.5 text-purple-400" />
+          <div className="border-t border-[var(--border-default)] pt-3 space-y-2">
+            <p className="text-[11px] font-semibold text-[var(--accent-indigo)] flex items-center gap-1.5">
+              <AlertTriangle className="w-3.5 h-3.5 text-[var(--accent-indigo)]" />
               AI SHAP REASONING SUMMARY
             </p>
-            <p className="text-xs text-slate-400 leading-relaxed bg-purple-950/20 p-3 rounded-xl border border-purple-500/30">
+            <p className="text-xs text-[var(--text-secondary)] leading-relaxed bg-[var(--tint-indigo-bg)] p-3 rounded-xl border border-[var(--tint-indigo-border)]">
               {MOCK_SHAP_EXPLANATION.ai_summary}
             </p>
           </div>

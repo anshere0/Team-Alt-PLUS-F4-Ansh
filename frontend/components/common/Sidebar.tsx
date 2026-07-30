@@ -16,13 +16,13 @@ export const Sidebar: React.FC = () => {
   const pathname = usePathname();
 
   return (
-    <aside className="w-60 border-r border-slate-800/80 bg-slate-950/60 backdrop-blur-xl flex flex-col justify-between p-3.5 shrink-0 hidden md:flex min-h-[calc(100vh-3.5rem)] font-sans">
-      <div className="space-y-5">
+    <aside className="w-56 border-r border-[var(--border-default)] bg-[var(--bg-sidebar)] flex flex-col justify-between py-4 px-3 shrink-0 hidden md:flex min-h-[calc(100vh-3.25rem)] font-sans transition-colors duration-200">
+      <div className="space-y-6">
         <div>
-          <p className="text-[11px] font-medium text-slate-400 uppercase tracking-wider mb-2 px-2">
+          <p className="text-[10px] font-medium text-[var(--text-muted)] mb-3 px-2">
             Navigation
           </p>
-          <nav className="space-y-1">
+          <nav className="space-y-0.5">
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
@@ -30,13 +30,13 @@ export const Sidebar: React.FC = () => {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs transition-all ${
+                  className={`flex items-center gap-2.5 px-2.5 py-2 rounded-md text-sm transition-all ${
                     isActive
-                      ? 'bg-slate-800/90 text-white font-medium border border-slate-700/60 shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60 border border-transparent'
+                      ? 'bg-[var(--bg-active)] text-[var(--text-primary)] font-medium'
+                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-blue-400' : 'text-slate-400'}`} />
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-[var(--accent-blue)]' : 'text-[var(--text-muted)]'}`} />
                   <span>{item.label}</span>
                 </Link>
               );
@@ -44,30 +44,30 @@ export const Sidebar: React.FC = () => {
           </nav>
         </div>
 
-        <div className="pt-3 border-t border-slate-800/60 px-2">
-          <p className="text-[11px] font-medium text-slate-400 uppercase tracking-wider mb-2">
-            System Engine
+        <div className="pt-4 border-t border-[var(--border-subtle)] px-1">
+          <p className="text-[10px] font-medium text-[var(--text-muted)] mb-2 px-1">
+            System
           </p>
-          <div className="glass-panel p-2.5 space-y-2 text-xs">
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400 flex items-center gap-1.5">
-                <Cpu className="w-3.5 h-3.5 text-blue-400" /> Model Version
+          <div className="space-y-1.5 text-xs px-1">
+            <div className="flex items-center justify-between py-1">
+              <span className="text-[var(--text-muted)] flex items-center gap-1.5">
+                <Cpu className="w-3 h-3" /> Model
               </span>
-              <span className="font-mono text-slate-200 text-[11px]">v4.2-XGB</span>
+              <span className="font-mono text-[var(--text-secondary)] text-[11px]">v4.2-XGB</span>
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400 flex items-center gap-1.5">
-                <ShieldAlert className="w-3.5 h-3.5 text-emerald-400" /> SHAP Engine
+            <div className="flex items-center justify-between py-1">
+              <span className="text-[var(--text-muted)] flex items-center gap-1.5">
+                <ShieldAlert className="w-3 h-3" /> SHAP
               </span>
-              <span className="font-sans font-medium text-emerald-400 text-[11px]">Online</span>
+              <span className="font-mono text-[var(--accent-emerald)] text-[11px]">Online</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="p-3 glass-panel border-slate-800 bg-slate-900/40">
-        <p className="text-[11px] font-medium text-slate-300 mb-1">Grid Operational Status</p>
-        <p className="text-[11px] text-slate-400 leading-relaxed">
+      <div className="px-1 py-3 border-t border-[var(--border-subtle)]">
+        <p className="text-[11px] text-[var(--text-secondary)] mb-0.5">Grid Status</p>
+        <p className="text-[11px] text-[var(--text-muted)] leading-relaxed">
           148.9k smart meters active across 14 feeder lines.
         </p>
       </div>

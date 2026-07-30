@@ -74,22 +74,22 @@ export const CopilotDrawer: React.FC = () => {
           animate={{ x: 0 }}
           exit={{ x: '100%' }}
           transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-          className="fixed top-0 right-0 w-full sm:w-[400px] h-full bg-slate-950/95 backdrop-blur-xl border-l border-slate-800 z-50 flex flex-col shadow-xl"
+          className="fixed top-0 right-0 w-full sm:w-[400px] h-full bg-[var(--bg-surface)]/95 backdrop-blur-xl border-l border-[var(--border-default)] z-50 flex flex-col shadow-xl transition-colors duration-200"
         >
           {/* Header */}
-          <div className="p-3.5 border-b border-slate-800 flex items-center justify-between bg-slate-900/40">
+          <div className="p-3.5 border-b border-[var(--border-default)] flex items-center justify-between bg-[var(--bg-raised)]">
             <div className="flex items-center gap-2.5">
-              <div className="p-1.5 rounded-lg bg-violet-950/60 border border-violet-500/30 text-violet-300">
+              <div className="p-1.5 rounded-lg bg-[var(--tint-violet-bg)] border border-[var(--tint-violet-border)] text-[var(--accent-indigo)]">
                 <Bot className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="font-semibold text-xs text-white">GridGuard AI Copilot</h3>
-                <p className="text-[10px] font-mono text-slate-400">TELEMETRY ASSISTANT</p>
+                <h3 className="font-semibold text-xs text-[var(--text-primary)]">GridGuard AI Copilot</h3>
+                <p className="text-[10px] font-mono text-[var(--text-muted)]">TELEMETRY ASSISTANT</p>
               </div>
             </div>
             <button
               onClick={toggleCopilot}
-              className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+              className="p-1 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]"
             >
               <X className="w-4 h-4" />
             </button>
@@ -103,31 +103,31 @@ export const CopilotDrawer: React.FC = () => {
                 className={`flex gap-2 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 {msg.sender === 'assistant' && (
-                  <div className="w-6 h-6 rounded-md bg-violet-950/80 border border-violet-500/30 text-violet-300 flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-6 h-6 rounded-md bg-[var(--tint-violet-bg)] border border-[var(--tint-violet-border)] text-[var(--accent-indigo)] flex items-center justify-center shrink-0 mt-0.5">
                     <Bot className="w-3.5 h-3.5" />
                   </div>
                 )}
                 <div
                   className={`p-3 rounded-xl max-w-[84%] leading-relaxed ${
                     msg.sender === 'user'
-                      ? 'bg-blue-600 text-white font-medium rounded-tr-none'
-                      : 'glass-panel text-slate-200 border-slate-800 rounded-tl-none bg-slate-900/60'
+                      ? 'bg-[var(--accent-blue)] text-white font-medium rounded-tr-none'
+                      : 'glass-panel text-[var(--text-primary)] rounded-tl-none bg-[var(--bg-raised)]'
                   }`}
                 >
                   <p>{msg.text}</p>
-                  <span className="text-[9px] font-mono text-slate-400 block text-right mt-1 opacity-70">
+                  <span className="text-[9px] font-mono text-[var(--text-muted)] block text-right mt-1 opacity-70">
                     {msg.timestamp}
                   </span>
                 </div>
                 {msg.sender === 'user' && (
-                  <div className="w-6 h-6 rounded-md bg-blue-950/80 border border-blue-500/30 text-blue-300 flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-6 h-6 rounded-md bg-[var(--tint-blue-bg)] border border-[var(--tint-blue-border)] text-[var(--accent-blue)] flex items-center justify-center shrink-0 mt-0.5">
                     <User className="w-3.5 h-3.5" />
                   </div>
                 )}
               </div>
             ))}
             {isTyping && (
-              <div className="flex items-center gap-2 text-violet-400 font-mono text-[11px] py-1.5">
+              <div className="flex items-center gap-2 text-[var(--accent-indigo)] font-mono text-[11px] py-1.5">
                 <Sparkles className="w-3.5 h-3.5 animate-spin" />
                 <span>Analyzing telemetry SHAP matrix...</span>
               </div>
@@ -135,14 +135,14 @@ export const CopilotDrawer: React.FC = () => {
           </div>
 
           {/* Quick Prompt Pills */}
-          <div className="p-3 border-t border-slate-800/80 bg-slate-900/20 space-y-2">
-            <p className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Suggested Queries</p>
+          <div className="p-3 border-t border-[var(--border-default)] bg-[var(--bg-inset)] space-y-2">
+            <p className="text-[10px] font-mono text-[var(--text-muted)] uppercase tracking-wider">Suggested Queries</p>
             <div className="flex flex-wrap gap-1.5">
               {PROMPT_PILLS.map((pill, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleSend(pill)}
-                  className="text-[10px] text-slate-300 hover:text-white bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 px-2.5 py-1 rounded-md text-left transition-colors"
+                  className="text-[10px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] bg-[var(--bg-surface)] hover:bg-[var(--bg-raised)] border border-[var(--border-default)] hover:border-[var(--border-emphasis)] px-2.5 py-1 rounded-md text-left transition-colors"
                 >
                   {pill}
                 </button>
@@ -151,18 +151,18 @@ export const CopilotDrawer: React.FC = () => {
           </div>
 
           {/* Input Box */}
-          <div className="p-3 border-t border-slate-800 bg-slate-950 flex items-center gap-2">
+          <div className="p-3 border-t border-[var(--border-default)] bg-[var(--bg-surface)] flex items-center gap-2">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               placeholder="Ask Copilot about grid anomalies..."
-              className="flex-1 bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 font-sans"
+              className="flex-1 bg-[var(--bg-input)] border border-[var(--border-default)] rounded-lg px-3 py-2 text-xs text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--border-emphasis)] font-sans"
             />
             <button
               onClick={() => handleSend()}
-              className="p-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition-colors"
+              className="p-2 rounded-lg bg-[var(--accent-blue)] hover:opacity-90 text-white transition-colors"
             >
               <Send className="w-3.5 h-3.5" />
             </button>
