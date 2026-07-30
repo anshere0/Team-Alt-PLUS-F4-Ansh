@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 
 from app.schemas.predict import (
     PredictionResponse,
@@ -6,13 +6,16 @@ from app.schemas.predict import (
     PredictRiskRequest,
 )
 from app.services.prediction_service import prediction_service
+from app.core.rate_limit import limiter
 
 router = APIRouter()
 
 @router.post("/risk", response_model=PredictionResponse)
-async def predict_risk(request: PredictRiskRequest):
+@limiter.limit("20/minute")
+async def predict_risk(req: Request, request: PredictRiskRequest):
     return await prediction_service.predict_risk(request)
 
 @router.post("/load", response_model=PredictionResponse)
-async def predict_load(request: PredictLoadRequest):
+@limiter.limit("20/minute")
+async def predict_load(req: Request, request: PredictLoadRequest):
     return await prediction_service.predict_load(request)

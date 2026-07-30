@@ -43,6 +43,8 @@ apiClient.interceptors.response.use(
       if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
         window.location.href = '/login';
       }
+    } else if (error.response?.status === 429) {
+      console.warn('Rate Limit Exceeded', error.response.data);
     }
     return Promise.reject(error);
   }
