@@ -3,13 +3,14 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Map, Network, ClipboardList, ShieldAlert, Cpu } from 'lucide-react';
+import { LayoutDashboard, Map, Network, ClipboardList, ShieldAlert, Cpu, UploadCloud } from 'lucide-react';
 
 const NAV_ITEMS = [
   { href: '/', label: 'Executive Dashboard', icon: LayoutDashboard },
   { href: '/gis', label: 'GIS Loss Heatmap', icon: Map },
   { href: '/topology', label: 'Grid Topology', icon: Network },
   { href: '/inspector', label: 'Inspector Worklist', icon: ClipboardList },
+  { href: '/ingestion', label: 'Data Ingestion', icon: UploadCloud },
 ];
 
 export const Sidebar: React.FC = () => {
