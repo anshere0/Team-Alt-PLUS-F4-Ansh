@@ -7,16 +7,18 @@
 
 ## Overview
 
-GridGuard AI is a proactive smart grid telemetry dashboard designed to identify power theft and unmetered energy loss (AT&C losses) in real time. By ingesting live smart meter data via WebSockets and processing it through an anomaly detection pipeline, GridGuard provides utility dispatchers with an interactive command center to visually trace and quantify electrical theft.
+**GridGuard AI** is a state-of-the-art, proactive smart grid telemetry dashboard engineered specifically to combat power theft and unmetered energy loss (AT&C losses). Globally, utility companies lose billions of dollars annually due to localized energy theft (such as direct hooking and smart meter bypassing) which traditionally goes unnoticed until a monthly billing audit or catastrophic transformer failure occurs. 
+
+By aggressively ingesting and parsing live smart meter data through high-speed WebSockets, GridGuard feeds this telemetry through an anomaly detection pipeline. It provides utility dispatchers and grid operators with an interactive, real-time command center to visually trace electrical theft, instantly quantify it into localized financial loss, and prioritize field inspector dispatches based on AI-driven risk scores. GridGuard shifts grid management from reactive maintenance to proactive revenue recovery.
 
 ## Architecture
 
-The system utilizes a decoupled, asynchronous architecture. 
+The system utilizes a decoupled, asynchronous microservices-inspired architecture designed to handle high-throughput IoT telemetry without locking the main rendering threads of the client interface.
 
-- **Frontend:** Next.js 14, React, Tailwind CSS, Zustand, React Flow, Recharts
-- **Backend:** Python, FastAPI, SQLAlchemy 2.0 (Async), PostgreSQL
-- **Data Transport:** WebSockets for real-time telemetry, REST for stateful mutations
-- **AI Integration:** Simulated XGBoost inference engine with SHAP value generation for explainability
+- **Frontend:** Built on Next.js 14 utilizing the App Router. It leverages React Server Components where possible, falling back to Client Components for heavy interactive layers. Tailwind CSS drives the UI, while Zustand handles global state (specifically managing a ring-buffer for WebSocket alerts). React Flow and Recharts power the data visualizations.
+- **Backend:** A highly concurrent Python application built with FastAPI. It uses `async def` routing universally and `asyncpg` via SQLAlchemy 2.0 to ensure the event loop is never blocked by database I/O.
+- **Data Transport:** WebSockets are used for pushing real-time telemetry from the server to the browser, reducing the HTTP overhead of traditional polling by over 95%. Standard REST endpoints handle stateful mutations and large data queries.
+- **AI Integration:** The backend simulates an XGBoost inference engine. It evaluates incoming JSON telemetry against historical baselines, returning an anomaly probability score and SHAP (SHapley Additive exPlanations) values to justify the classification.
 
 ```mermaid
 graph TD
@@ -36,17 +38,17 @@ graph TD
 
 ## Core Features
 
-**Live Telemetry Stream**
-Sub-second anomaly detection streamed directly to the browser. The architecture decouples the WebSocket stream from the React rendering cycle using a ring-buffer state manager to ensure the UI does not freeze during high-throughput events.
+**Live Telemetry Stream (WebSockets)**
+GridGuard delivers sub-second anomaly detection streamed directly to the browser. To handle the massive throughput of a simulated city-scale grid, the architecture decouples the WebSocket stream from the React rendering cycle. A custom Zustand ring-buffer state manager traps the incoming alerts, ensuring the UI remains buttery smooth and does not freeze during high-throughput anomaly events.
 
-**Dynamic Grid Topology**
-A visual, hierarchical mapping of the grid from Substation down to the Smart Meter. Built on React Flow, this allows operators to trace anomalies to their exact physical origin.
+**Dynamic Grid Topology Mapping**
+A visual, hierarchical mapping of the grid from the main Substation (33kV), down to the medium-voltage Feeders (11kV), the Distribution Transformers, and finally the individual consumer Smart Meters. Built on React Flow, this allows operators to trace anomalies to their exact physical origin. If a meter is bypassed, operators can visually verify if the parent transformer is bearing an unmetered load.
 
-**Financial Context and Explainable AI**
-Detected anomalies are instantly quantified into localized financial loss. SHAP value summaries are generated to explain the AI's reasoning (e.g., Phase Voltage Mismatch, Peak Hour Drop), moving away from black-box AI toward actionable insights.
+**Financial Context and Explainable AI (XAI)**
+Raw machine learning outputs (like a 94% anomaly probability) are difficult for dispatchers to interpret. GridGuard instantly quantifies these detections into localized financial loss (₹). Furthermore, SHAP value summaries are generated to explain the AI's reasoning in plain English (e.g., "Phase Voltage Mismatch", "Peak Hour Drop"). This moves the system away from black-box AI toward transparent, actionable insights.
 
-**Automated Data Ingestion**
-A pipeline designed to digitize legacy workflows. Utility operators can upload legacy PDF field audits or batch CSV telemetry, which the backend parses, extracts anomalies from, and injects directly into the database.
+**Automated Data Ingestion and NLP**
+A dedicated ingestion pipeline designed to digitize legacy utility workflows. Utility operators can drag and drop legacy PDF field audit reports or batch CSV offline telemetry. The backend parses these documents in-memory, extracts threat intelligence and anomalies using NLP techniques, and injects the findings directly into the central PostgreSQL database.
 
 ## Interfaces
 
