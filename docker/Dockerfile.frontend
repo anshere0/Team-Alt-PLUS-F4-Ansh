@@ -1,0 +1,6 @@
+FROM node:18-alpine
+WORKDIR /app
+RUN echo '{"name": "frontend", "scripts": {"dev": "node server.js"}}' > package.json
+RUN echo 'const http = require("http"); const server = http.createServer((req, res) => { if(req.url==="/health"){res.writeHead(200); res.end("OK");} else {res.writeHead(200); res.end("Frontend Skeleton");} }); server.listen(3000, () => console.log("Frontend started"));' > server.js
+EXPOSE 3000
+CMD ["npm", "run", "dev"]

@@ -1,0 +1,35 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main", "dev", "integration" ]
+  pull_request:
+    branches: [ "main", "dev", "integration" ]
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Setup environment
+        run: cp .env.example .env
+
+      - name: Build Docker Stack
+        run: docker compose build
+
+      - name: Start Docker Stack
+        run: docker compose up -d
+
+      - name: Wait for services to be healthy
+        run: sleep 20
+
+      - name: Install test dependencies
+        run: pip install urllib3 || true
+
+      - name: Run Health Checks
+        run: python integration-tests/health/health_check.py
+
+      - name: Run Integration Scripts
+        run: bash scripts/verify_integration.sh
