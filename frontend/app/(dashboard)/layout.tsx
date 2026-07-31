@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { AppShell } from '@/components/common/AppShell';
 
 const queryClient = new QueryClient({
@@ -17,9 +16,7 @@ const queryClient = new QueryClient({
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <ProtectedRoute>
-        <AppShell>{children}</AppShell>
-      </ProtectedRoute>
+      <AppShell>{children}</AppShell>
     </QueryClientProvider>
   );
 }

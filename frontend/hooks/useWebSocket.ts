@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { useNotificationStore } from '../store/notificationStore';
-import { useAuthStore } from '../store/authStore';
 import { useGISStore } from '../store/gisStore';
 import { useTopologyStore } from '../store/topologyStore';
 import { GridAlert } from '../types/alert';
@@ -9,7 +8,6 @@ const BASE_WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8000/api/v
 
 export function useWebSocket() {
   const { addAlert, setWsConnected } = useNotificationStore();
-  const { token } = useAuthStore();
   const updateNodePredictionGIS = useGISStore((s) => s.updateNodePrediction);
   const updateNodePredictionTopology = useTopologyStore((s) => s.updateNodePrediction);
   
@@ -17,11 +15,8 @@ export function useWebSocket() {
   const reconnectAttemptsRef = useRef(0);
 
   useEffect(() => {
-    // Wait until token is available
-    if (!token) return;
-
     let ws: WebSocket | null = null;
-    const wsUrl = `${BASE_WS_URL}?token=${token}`;
+    const wsUrl = `${BASE_WS_URL}?token=mock_token`;
 
     const connect = () => {
       try {
@@ -111,5 +106,5 @@ export function useWebSocket() {
       if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
       if (ws) ws.close();
     };
-  }, [token, addAlert, setWsConnected, updateNodePredictionGIS, updateNodePredictionTopology]);
+  }, [addAlert, setWsConnected, updateNodePredictionGIS, updateNodePredictionTopology]);
 }

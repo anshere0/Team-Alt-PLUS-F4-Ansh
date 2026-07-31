@@ -1,14 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useAuthStore } from '../../store/authStore';
 import { useUIStore } from '../../store/uiStore';
 import { useThemeStore } from '../../store/themeStore';
 import { LiveConnectionBadge } from './LiveConnectionBadge';
-import { Zap, Bot, LogOut, Sun, Moon } from 'lucide-react';
+import { Zap, Bot, Sun, Moon } from 'lucide-react';
 
 export const Header: React.FC = () => {
-  const { user, logout } = useAuthStore();
   const { toggleCopilot, copilotOpen } = useUIStore();
   const { theme, toggleTheme } = useThemeStore();
   const [isMounted, setIsMounted] = useState(false);
@@ -62,19 +60,12 @@ export const Header: React.FC = () => {
           <span>AI Copilot</span>
         </button>
 
-        {isMounted && user && (
+        {isMounted && (
           <div className="flex items-center gap-3 pl-3 border-l border-[var(--border-default)]">
             <div className="text-right hidden sm:block">
-              <p className="text-xs font-medium text-[var(--text-primary)]">{user.full_name}</p>
-              <p className="text-[10px] text-[var(--text-muted)] font-mono">{user.role}</p>
+              <p className="text-xs font-medium text-[var(--text-primary)]">Grid Operator</p>
+              <p className="text-[10px] text-[var(--text-muted)] font-mono">ADMIN</p>
             </div>
-            <button
-              onClick={logout}
-              title="Sign Out"
-              className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--accent-rose)] hover:bg-[var(--bg-hover)] transition-colors"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
           </div>
         )}
       </div>

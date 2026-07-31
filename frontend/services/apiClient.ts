@@ -1,6 +1,5 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { ApiResponse, ApiSuccessResponse } from '../types/api';
-import { useAuthStore } from '../store/authStore';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
@@ -12,13 +11,9 @@ export const apiClient = axios.create({
   timeout: 15000,
 });
 
-// Request interceptor to inject Authorization Bearer token
+// Request interceptor (auth token injection removed)
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = useAuthStore.getState().token;
-    if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
     return config;
   },
   (error) => Promise.reject(error)
@@ -37,13 +32,7 @@ apiClient.interceptors.response.use(
     return response.data;
   },
   (error: AxiosError<any>) => {
-    if (error.response?.status === 401) {
-      // Clear store and redirect to login on 401
-      useAuthStore.getState().logout();
-      if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
-        window.location.href = '/login';
-      }
-    } else if (error.response?.status === 429) {
+    if (error.response?.status === 429) {
       console.warn('Rate Limit Exceeded', error.response.data);
     }
     return Promise.reject(error);
