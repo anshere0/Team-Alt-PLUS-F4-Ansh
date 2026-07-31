@@ -61,8 +61,9 @@ export const dashboardService = {
       today_energy_loss_mwh: mapMetric('today_energy_loss_mwh', "Today's Energy Loss", 'MWh', data.today_energy_loss_mwh),
       financial_loss_at_risk: mapMetric('financial_loss_at_risk', 'Financial Loss at Risk', '₹', data.financial_loss_at_risk),
       detected_theft_nodes: mapMetric('detected_theft_nodes', 'Detected Theft Nodes', undefined, data.detected_theft_nodes),
-      ai_confidence_score: mapMetric('ai_confidence_score', 'AI Confidence Score', '%', data.ai_confidence_score)
-    } as any;
+      ai_confidence_score: mapMetric('ai_confidence_score', 'AI Confidence Score', '%', data.ai_confidence_score),
+      revenue_recovered_ytd: mapMetric('revenue_recovered_ytd', 'Revenue Recovered YTD', '₹', null as any)
+    };
   },
 
   getATCTrend: async (): Promise<ATCDataPoint[]> => {
