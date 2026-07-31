@@ -3,6 +3,7 @@ import { useNotificationStore } from '../store/notificationStore';
 import { useGISStore } from '../store/gisStore';
 import { useTopologyStore } from '../store/topologyStore';
 import { GridAlert } from '../types/alert';
+import { getMockToken } from '../services/apiClient';
 
 const BASE_WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8000/api/v1/ws/stream';
 
@@ -16,9 +17,13 @@ export function useWebSocket() {
 
   useEffect(() => {
     let ws: WebSocket | null = null;
-    const wsUrl = `${BASE_WS_URL}?token=mock_token`;
+    let isMounted = true;
 
-    const connect = () => {
+    const connect = async () => {
+      const token = await getMockToken();
+      if (!isMounted) return;
+      
+      const wsUrl = `${BASE_WS_URL}?token=${token}`;
       try {
         ws = new WebSocket(wsUrl);
 
@@ -103,6 +108,7 @@ export function useWebSocket() {
     connect();
 
     return () => {
+      isMounted = false;
       if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
       if (ws) ws.close();
     };

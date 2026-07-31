@@ -11,9 +11,33 @@ export const apiClient = axios.create({
   timeout: 15000,
 });
 
-// Request interceptor (auth token injection removed)
+let mockToken: string | null = null;
+let mockTokenPromise: Promise<string | null> | null = null;
+
+export async function getMockToken() {
+  if (mockToken) return mockToken;
+  if (mockTokenPromise) return mockTokenPromise;
+
+  mockTokenPromise = axios.post(`${API_BASE_URL}/api/v1/auth/login`, {
+    username: 'admin',
+    password: 'admin123'
+  }).then(res => {
+    mockToken = res.data.data.access_token;
+    return mockToken;
+  }).catch(() => null);
+
+  return mockTokenPromise;
+}
+
+// Request interceptor to automatically inject token
 apiClient.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
+  async (config: InternalAxiosRequestConfig) => {
+    if (!config.url?.includes('/auth/login')) {
+      const token = await getMockToken();
+      if (token && config.headers) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
     return config;
   },
   (error) => Promise.reject(error)
