@@ -137,12 +137,12 @@ export default function TopologyPage() {
                       { label: 'Downstream Smart Meters', value: '12 Active Meters', desc: 'Number of end-consumer smart meters receiving power from this transformer.' }
                     ];
                   } else if (type === 'meter') {
-                    const consumerName = selectedNode.details.consumer_name || 
+                    const consumerName = (selectedNode.details as any).consumer_name || 
                       (selectedNode.label.includes('A1-01') ? 'Apex Industrial Complex' : 
                        selectedNode.label.includes('A1-02') ? 'Delta Steel Industries' : 
                        selectedNode.label.includes('A2-01') ? 'Prestige Residential Hub' : 'Greenfield Manufacturing');
                     
-                    const address = selectedNode.details.address || 'Sector 4, Phase-II Industrial Layout';
+                    const address = (selectedNode.details as any).address || 'Sector 4, Phase-II Industrial Layout';
                     const load = selectedNode.details.current_load_kw || (selectedNode.status === 'critical' ? 45.2 : 12.4);
                     const riskVal = selectedNode.risk_score !== undefined && selectedNode.risk_score > 0 
                       ? selectedNode.risk_score 
