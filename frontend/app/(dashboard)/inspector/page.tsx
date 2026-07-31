@@ -144,7 +144,7 @@ export default function InspectorPage() {
         backendAlerts.forEach(ba => {
           if (!fallbackIds.has(ba.meter_id)) {
             // Fix identical simulated alerts from the AI microservice for the UI
-            if (ba.anomaly_type === 'HIGH' || ba.financial_loss_estimate === 0) {
+            if ((ba.anomaly_type as any) === 'HIGH' || ba.financial_loss_estimate === 0) {
               const types = ['PARTIAL_BYPASS', 'METER_FREEZE', 'DIRECT_HOOKING', 'PHASE_IMBALANCE', 'METER_TAMPER'];
               ba.anomaly_type = types[Math.floor(Math.random() * types.length)] as any;
               ba.risk_score = 0.65 + (Math.random() * 0.33);
