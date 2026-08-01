@@ -2,8 +2,11 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 
 from app.core.config import settings
 
+# Fix asyncpg sslmode issue: asyncpg expects ssl=require, not sslmode=require
+db_url = settings.DATABASE_URL.replace("sslmode=", "ssl=")
+
 engine = create_async_engine(
-    settings.DATABASE_URL,
+    db_url,
     pool_size=20,
     max_overflow=10,
     pool_timeout=30,
