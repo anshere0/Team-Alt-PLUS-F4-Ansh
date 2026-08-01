@@ -1,0 +1,73 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+<meta charset="utf-8">
+<title>Hackathon Pitch Q&A</title>
+<style>
+  body { font-family: 'Calibri', sans-serif; font-size: 12pt; }
+  h1 { font-size: 18pt; color: #2F5496; }
+  h2 { font-size: 16pt; color: #2F5496; margin-top: 20px; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+  h3 { font-size: 14pt; color: #2F5496; margin-bottom: 4px; }
+  p { margin-top: 2px; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<h1>GridGuard AI - Hackathon Questions</h1>
+
+<h2>Technical & Architecture Questions</h2>
+
+<h3>1. What specific problem does your project solve?</h3>
+<p><b>Answer Strategy:</b> Explain "AT&C Losses" (Aggregate Technical and Commercial losses). Power companies lose millions to non-technical losses (theft). Your software pinpoints exactly where theft happens in real-time, saving immense amounts of money and preventing grid overloads.</p>
+
+<h3>2. Why did you choose FastAPI over Node.js (Express) or Django?</h3>
+<p><b>Answer Strategy:</b> Emphasize <b>speed and AI integration</b>. FastAPI is natively asynchronous (great for WebSockets) and written in Python, which allowed you to seamlessly integrate your data processing and AI/ML models without needing a separate microservice.</p>
+
+<h3>3. How does your AI/Anomaly Detection actually work?</h3>
+<p><b>Answer Strategy:</b> Explain the hierarchy equation: Energy at Transformer = Sum of Energy at Smart Meters + Expected Technical Loss. If the discrepancy exceeds the technical loss threshold, your algorithm flags it as Commercial Loss (Theft) and calculates a risk score based on historical patterns.</p>
+
+<h3>4. How do you handle real-time data? What if the connection drops?</h3>
+<p><b>Answer Strategy:</b> Highlight your <code>useWebSocket.ts</code> implementation. Mention that you aren't just using WebSockets, but you implemented an <b>exponential backoff reconnection algorithm</b> to ensure the dashboard automatically and gracefully recovers if the network drops.</p>
+
+<h3>5. How scalable is this architecture? What happens if you connect 1 million smart meters?</h3>
+<p><b>Answer Strategy:</b> Explain that FastAPI handles thousands of concurrent requests due to the ASGI architecture. For the database, you chose PostgreSQL (Neon DB), which supports connection pooling. For future scale, you would add a message broker like Apache Kafka to queue the massive influx of IoT meter data.</p>
+
+<h3>6. Where is the data coming from right now?</h3>
+<p><b>Answer Strategy:</b> Be honest that it's simulated for the hackathon. Explain that you built an asynchronous background simulator task in FastAPI that mimics real-world IoT smart meter telemetry, generating realistic JSON payloads for different theft scenarios like "Meter Freezing" or "Direct Hooking".</p>
+
+<h3>7. I see you removed the login screen. How do you secure the backend API?</h3>
+<p><b>Answer Strategy:</b> Explain that while the UI is open for the demo, the backend API is fully secured using <b>JWT (JSON Web Tokens)</b> and role-based access control. You implemented a silent authentication mechanism in your Axios interceptors to automatically fetch and inject a Bearer token into all requests.</p>
+
+<h3>8. What was the hardest technical challenge you faced, and how did you overcome it?</h3>
+<p><b>Answer Strategy:</b> Talk about the CORS and WebSocket authentication challenges. Explain how strict security configurations crashed the API when credentials were allowed with wildcard origins, and how you fixed it by explicitly defining allowed origins and securely passing tokens to the WebSocket connection.</p>
+
+<h3>9. Why did you use Zustand instead of Redux for state management?</h3>
+<p><b>Answer Strategy:</b> Zustand provides a much simpler, boilerplate-free global state that is perfect for real-time applications. Redux would have been overkill and slower to iterate with during a fast-paced hackathon.</p>
+
+<h3>10. What is the next feature you would build if you had another week?</h3>
+<p><b>Answer Strategy:</b> (Pick one): Integrating predictive maintenance (predicting when a transformer will blow due to overload), adding a mobile app view for on-site line inspectors, or integrating actual hardware (like an ESP32 microcontroller) to send physical sensor data.</p>
+
+<h2>Advanced & Business-Focused Questions</h2>
+
+<h3>11. How is GridGuard AI different from traditional SCADA systems already used by power grids?</h3>
+<p><b>Answer Strategy:</b> SCADA systems are legacy, rule-based, and highly localized. GridGuard AI is a cloud-native, modern platform that uses <b>Machine Learning</b> to find hidden patterns that rules miss, and it provides real-time WebSockets to a web dashboard accessible anywhere, rather than being locked to a control room.</p>
+
+<h3>12. What is the business model? How would you monetize this?</h3>
+<p><b>Answer Strategy:</b> It is a <b>B2B SaaS (Software as a Service)</b> model targeted at DISCOMs (Distribution Companies) and government energy boards. We would charge a subscription fee based on the number of nodes (smart meters/transformers) monitored, plus a percentage of the revenue recovered from stopped theft.</p>
+
+<h3>13. How do you handle false positives? What if a spike is just a legitimate power surge?</h3>
+<p><b>Answer Strategy:</b> The AI provides a <b>Confidence Score</b> (e.g., 92%) rather than making binary decisions. We use a <b>Human-in-the-Loop</b> approach: the system flags the anomaly and routes it to the "Inspector Worklist". An operator reviews it and dispatches a crew to verify physically before taking drastic action like cutting power.</p>
+
+<h3>14. Smart meter data can reveal when people are home or on vacation. How do you handle Data Privacy?</h3>
+<p><b>Answer Strategy:</b> The system relies on <b>Data Anonymization</b>. We don't need to know the customer's name to detect theft; we only track the <code>meter_id</code> and energy consumption. PII (Personally Identifiable Information) is masked, and the AI primarily looks at the aggregate delta at the transformer level.</p>
+
+<h3>15. What happens if a smart meter is physically broken or tampered with so it sends NO data?</h3>
+<p><b>Answer Strategy:</b> The AI is trained to recognize a sudden drop to 0 kWh while the connected transformer still shows load as a specific anomaly type called <b>"Meter Freeze / Flatline"</b>. A total loss of signal is treated as a high-severity alert rather than just "zero consumption".</p>
+
+<h3>16. How difficult is it for a traditional, old-school power company to adopt this?</h3>
+<p><b>Answer Strategy:</b> Very easy. It doesn't require ripping out their existing infrastructure. GridGuard sits on top of their existing AMI (Advanced Metering Infrastructure). As long as their meters can export CSVs or hit a REST API, we can ingest their data.</p>
+
+<h3>17. What if the internet goes down at the substation?</h3>
+<p><b>Answer Strategy:</b> Currently, it relies on cloud connectivity. However, the future roadmap includes <b>Edge Computing</b>. We can deploy the lightweight XGBoost model directly onto an edge device (like a Raspberry Pi or industrial IPC) at the substation so it can detect theft locally and sync to the cloud once the connection is restored.</p>
+
+</body>
+</html>

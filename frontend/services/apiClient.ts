@@ -1,7 +1,8 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { ApiResponse, ApiSuccessResponse } from '../types/api';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+export const WS_BASE_URL = API_BASE_URL.replace(/^http/, 'ws') + '/api/v1/ws/stream';
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -56,6 +57,14 @@ apiClient.interceptors.response.use(
     return response.data;
   },
   (error: AxiosError<any>) => {
+    // Aggressive error logging for production debugging
+    console.error(`[API Error] ${error.config?.method?.toUpperCase()} ${error.config?.url}`);
+    console.error('[API Error Details]', {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message
+    });
+
     if (error.response?.status === 429) {
       console.warn('Rate Limit Exceeded', error.response.data);
     }

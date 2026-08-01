@@ -2,11 +2,12 @@ import httpx
 import logging
 from datetime import datetime
 from pydantic import BaseModel
+from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
-# Base URL of the AI microservice
-AI_SERVICE_URL = "http://localhost:8001"
+# AI Service URL from environment settings
+AI_SERVICE_URL = settings.AI_SERVICE_URL
 
 class PredictRequest(BaseModel):
     gridId: str

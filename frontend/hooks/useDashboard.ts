@@ -7,12 +7,14 @@ export function useDashboard() {
     queryFn: dashboardService.getSummary,
     staleTime: 5000,
     refetchInterval: 10000,
+    retry: 1,
   });
 
   const atcQuery = useQuery({
     queryKey: ['dashboard-atc-trend'],
     queryFn: dashboardService.getATCTrend,
     staleTime: 10000,
+    retry: 1,
   });
 
   return {
