@@ -2,8 +2,9 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 
 from app.core.config import settings
 
-# Fix asyncpg sslmode issue: asyncpg expects ssl=require, not sslmode=require
+# Fix asyncpg compatibility issues with Neon connection strings
 db_url = settings.DATABASE_URL.replace("sslmode=", "ssl=")
+db_url = db_url.replace("&channel_binding=require", "").replace("?channel_binding=require&", "?").replace("?channel_binding=require", "")
 
 engine = create_async_engine(
     db_url,
