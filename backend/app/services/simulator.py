@@ -11,7 +11,8 @@ from app.db.models.alert import Alert
 from app.db.models.meter import SmartMeter, TelemetryReading
 from app.db.models.prediction import Prediction
 from app.schemas.alert import TelemetryResponse
-from app.services.ai_client import get_risk_prediction, get_load_prediction
+from app.services.prediction_service import prediction_service
+from app.schemas.predict import PredictRiskRequest, PredictLoadRequest
 from app.services.ws_manager import manager
 
 logger = logging.getLogger(__name__)
@@ -25,6 +26,7 @@ async def generate_telemetry_for_meter(meter: SmartMeter, db: AsyncSession):
     # 1. Base telemetry generation (normal bounds)
     voltage = random.uniform(225.0, 235.0)
     current = random.uniform(10.0, 50.0)
+    power_factor = 0.95
     
     # Optional: We can still introduce some random anomalous base readings 
     # to test the AI's detection, but the AI will actually score it.
@@ -33,10 +35,10 @@ async def generate_telemetry_for_meter(meter: SmartMeter, db: AsyncSession):
         # Voltage drop (anomalous)
         voltage = random.uniform(180.0, 200.0)
     elif rand_event < 0.10:
-        # Current spike (anomalous)
-        current = random.uniform(80.0, 100.0)
+        # Power factor drop
+        power_factor = random.uniform(0.60, 0.75)
 
-    active_power = (voltage * current * 0.9) / 1000.0 
+    active_power = (voltage * current * power_factor) / 1000.0 
     timestamp = datetime.now(timezone.utc)
 
     reading = TelemetryReading(
@@ -46,7 +48,7 @@ async def generate_telemetry_for_meter(meter: SmartMeter, db: AsyncSession):
         expected_power_kwh=active_power * 0.95,
         voltage_v=voltage,
         current_a=current,
-        power_factor=0.9,
+        power_factor=power_factor,
         temperature_c=random.uniform(30.0, 60.0),
         risk_score=0.0, # Will be updated by AI later or kept if AI fails
         anomaly_type=None
@@ -55,9 +57,15 @@ async def generate_telemetry_for_meter(meter: SmartMeter, db: AsyncSession):
     db.add(reading)
     await db.flush() # Flush to get reading in DB session
     
-    # 2. Call AI Service
-    risk_pred = await get_risk_prediction(meter.id, active_power, timestamp)
-    load_pred = await get_load_prediction(meter.id, active_power, timestamp)
+    # 2. Call true AI Service
+    risk_req = PredictRiskRequest(
+        gridId=meter.id, timestamp=timestamp, currentLoad=active_power,
+        temperature=35.0, humidity=40.0, voltage_v=voltage, current_a=current, power_factor=power_factor
+    )
+    load_req = PredictLoadRequest(gridId=meter.id, timestamp=timestamp, currentLoad=active_power, temperature=35.0, humidity=40.0)
+    
+    risk_pred = await prediction_service.predict_risk(risk_req, db)
+    load_pred = await prediction_service.predict_load(load_req, db)
     
     risk_score = risk_pred.prediction if risk_pred else 0.1
     confidence = risk_pred.confidence if risk_pred else 0.9
@@ -102,12 +110,18 @@ async def generate_telemetry_for_meter(meter: SmartMeter, db: AsyncSession):
         db.add(alert)
         await db.commit() # Commit to get alert ID
         
-        # Broadcast alert via WS
+        # Broadcast fully hydrated alert via WS
         await manager.broadcast({
             "type": "NEW_ALERT",
             "data": {
+                "alert_id": alert.id,
                 "meter_id": alert.meter_id,
+                "consumer_name": meter.consumer_name,
+                "transformer_id": meter.transformer_id,
                 "severity": alert.severity,
+                "anomaly_type": anomaly,
+                "risk_score": risk_score,
+                "financial_loss_estimate": financial_loss,
                 "message": alert.message
             }
         })
