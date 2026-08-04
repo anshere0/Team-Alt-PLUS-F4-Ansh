@@ -14,7 +14,10 @@ def get_dashboard_service():
     repo = DashboardRepository()
     return DashboardService(repo)
 
+from fastapi_cache.decorator import cache
+
 @router.get("/summary", response_model=DashboardSummary)
+@cache(expire=30)
 async def get_dashboard_summary(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),

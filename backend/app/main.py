@@ -12,8 +12,13 @@ from app.services.simulator import run_simulation
 from app.core.rate_limit import limiter
 
 
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.inmemory import InMemoryBackend
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Startup: Initialize FastAPICache
+    FastAPICache.init(InMemoryBackend(), prefix="fastapi-cache")
     # Startup: Create simulator task
     simulator_task = asyncio.create_task(run_simulation())
     yield
