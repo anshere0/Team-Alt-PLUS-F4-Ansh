@@ -1,17 +1,17 @@
 import React from "react";
 
-interface SkeletonProps {
+interface SkeletonComponentProps {
   className?: string;
   style?: React.CSSProperties;
 }
 
-export function Skeleton({ className = "", style }: SkeletonProps) {
+export function Skeleton({ className = "", style }: SkeletonComponentProps) {
   return (
     <div className={`animate-pulse bg-gray-800 rounded-md ${className}`} style={style} />
   );
 }
 
-export function SkeletonCard({ className = "" }: SkeletonProps) {
+export function SkeletonCard({ className = "" }: SkeletonComponentProps) {
   return (
     <div className={`p-6 rounded-xl border border-gray-800 bg-gray-900/50 flex flex-col gap-4 ${className}`}>
       <div className="flex items-center justify-between">
@@ -26,7 +26,7 @@ export function SkeletonCard({ className = "" }: SkeletonProps) {
   );
 }
 
-export function SkeletonChart({ className = "" }: SkeletonProps) {
+export function SkeletonChart({ className = "" }: SkeletonComponentProps) {
   return (
     <div className={`p-6 rounded-xl border border-gray-800 bg-gray-900/50 flex flex-col gap-4 ${className}`}>
       <Skeleton className="h-6 w-48 mb-4" />
