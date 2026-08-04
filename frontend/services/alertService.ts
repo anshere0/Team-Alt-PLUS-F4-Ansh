@@ -13,10 +13,11 @@ export const alertService = {
 
   acknowledgeAlert: async (alertId: string): Promise<boolean> => {
     try {
-      await apiClient.patch(API_ENDPOINTS.ALERTS.UPDATE(alertId), { is_acknowledged: true });
+      await apiClient.put(API_ENDPOINTS.ALERTS.RESOLVE(alertId), { notes: "Resolved via dashboard" });
       return true;
-    } catch {
-      return true;
+    } catch (error) {
+      console.error("Failed to resolve alert:", error);
+      throw error;
     }
   },
 };

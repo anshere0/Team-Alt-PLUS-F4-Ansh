@@ -19,6 +19,7 @@ export const API_ENDPOINTS = {
     LIST: '/api/v1/alerts',
     CREATE: '/api/v1/alerts',
     UPDATE: (alertId: string) => `/api/v1/alerts/${alertId}`,
+    RESOLVE: (alertId: string) => `/api/v1/alerts/${alertId}/resolve`,
   },
   DASHBOARD: {
     SUMMARY: '/api/v1/dashboard/summary',

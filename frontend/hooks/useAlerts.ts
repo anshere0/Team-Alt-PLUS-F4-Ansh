@@ -25,9 +25,15 @@ export function useAlerts() {
   return {
     alerts,
     isLoading: query.isLoading,
-    acknowledgeAlert: (alertId: string) => {
+    acknowledgeAlert: async (alertId: string) => {
+      // Optimistic update
       acknowledgeAlert(alertId);
-      alertService.acknowledgeAlert(alertId);
+      try {
+        await alertService.acknowledgeAlert(alertId);
+      } catch (error) {
+        // Revert could go here if we had an un-acknowledge action
+        console.error("Failed to acknowledge on server", error);
+      }
     },
   };
 }
