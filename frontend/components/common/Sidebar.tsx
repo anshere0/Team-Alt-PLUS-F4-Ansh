@@ -30,13 +30,15 @@ export const Sidebar: React.FC = () => {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center gap-2.5 px-2.5 py-2 rounded-md text-sm transition-all ${
+                  aria-label={`Navigate to ${item.label}`}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`flex items-center gap-2.5 px-2.5 py-2 rounded-md text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-blue)] transition-all ${
                     isActive
                       ? 'bg-[var(--bg-active)] text-[var(--text-primary)] font-medium'
                       : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-[var(--accent-blue)]' : 'text-[var(--text-muted)]'}`} />
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-[var(--accent-blue)]' : 'text-[var(--text-muted)]'}`} aria-hidden="true" />
                   <span>{item.label}</span>
                 </Link>
               );

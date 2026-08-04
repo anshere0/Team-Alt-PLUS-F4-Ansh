@@ -5,11 +5,24 @@ import { motion } from 'framer-motion';
 import { KPIMetric, ExecutiveDashboardSummary } from '../../types/dashboard';
 import { TrendingUp, TrendingDown, Minus, Activity, ShieldAlert, Zap, DollarSign, Cpu, CheckCircle, Clock } from 'lucide-react';
 
+import { SkeletonCard } from '../common/Skeleton';
+
 interface KPIGridProps {
   metrics?: ExecutiveDashboardSummary | Record<string, KPIMetric>;
+  isLoading?: boolean;
 }
 
-export const KPIGrid: React.FC<KPIGridProps> = ({ metrics }) => {
+export const KPIGrid: React.FC<KPIGridProps> = ({ metrics, isLoading }) => {
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+          <SkeletonCard key={i} />
+        ))}
+      </div>
+    );
+  }
+
   if (!metrics) return null;
 
   const metricList = Object.values(metrics);

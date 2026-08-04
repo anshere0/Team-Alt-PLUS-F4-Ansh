@@ -42,7 +42,8 @@ export const Header: React.FC = () => {
           <button
             onClick={toggleTheme}
             title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="p-1.5 rounded-md text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-colors"
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            className="p-1.5 rounded-md text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-blue)] transition-colors"
           >
             {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-indigo-500" />}
           </button>
@@ -50,7 +51,9 @@ export const Header: React.FC = () => {
 
         <button
           onClick={toggleCopilot}
-          className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
+          aria-label={copilotOpen ? 'Close AI Copilot' : 'Open AI Copilot'}
+          aria-expanded={copilotOpen}
+          className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-indigo)] transition-all ${
             copilotOpen
               ? 'bg-[var(--tint-indigo-bg)] text-[var(--accent-indigo)] border border-[var(--tint-indigo-border)]'
               : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] border border-transparent hover:border-[var(--border-default)]'
