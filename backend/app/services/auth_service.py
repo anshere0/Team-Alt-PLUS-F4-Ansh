@@ -1,15 +1,13 @@
 from fastapi import HTTPException, status
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import create_access_token, verify_password
-from app.db.models.user import User
+from app.repositories.user_repo import user_repo
 from app.schemas.auth import AuthSession, UserResponse
 
 
 async def authenticate_user(username: str, password: str, db: AsyncSession) -> AuthSession:
-    result = await db.execute(select(User).where(User.username == username))
-    user = result.scalars().first()
+    user = await user_repo.get_by_username(db, username)
     
     if not user or not verify_password(password, user.hashed_password):
         raise HTTPException(

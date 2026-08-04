@@ -73,7 +73,7 @@ async def process_chat(message: str, db: AsyncSession) -> str:
                 elif function_name == "get_active_alerts":
                     alerts = await alert_service.get_active_alerts(db, limit=10)
                     function_response = json.dumps([
-                        {"equipment": a.equipment_id, "severity": a.severity, "message": a.message} 
+                        {"equipment": a["meter_id"], "severity": a["severity"], "message": a["message"]} 
                         for a in alerts
                     ])
                 else:
