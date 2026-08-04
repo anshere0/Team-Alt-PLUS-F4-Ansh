@@ -9,7 +9,7 @@ async def test_protected_route_without_token(client: AsyncClient, no_auth):
     """
     response = await client.get("/api/v1/grid/meters")
     assert response.status_code == 401
-    assert response.json()["detail"] == "Not authenticated"
+    assert response.json()["detail"] == "Could not validate credentials"
 
 @pytest.mark.asyncio
 async def test_protected_route_with_mock_auth(client: AsyncClient, mock_auth):

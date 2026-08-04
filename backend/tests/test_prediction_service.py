@@ -1,5 +1,5 @@
 import pytest
-from app.services.ai_service import PredictionService
+from app.services.prediction_service import PredictionService
 
 @pytest.mark.asyncio
 async def test_prediction_service_anomalous_data():
@@ -19,7 +19,7 @@ async def test_prediction_service_anomalous_data():
         "thd": 15.0
     }
     
-    prediction = await service.predict_anomaly("test-meter", anomalous_reading)
+    prediction = await service.predict_load("test-meter", anomalous_reading)
     
     # The anomaly score should be high (closer to 1.0)
     assert prediction["risk_score"] > 0.70
@@ -42,7 +42,7 @@ async def test_prediction_service_normal_data():
         "thd": 2.1
     }
     
-    prediction = await service.predict_anomaly("test-meter", normal_reading)
+    prediction = await service.predict_load("test-meter", normal_reading)
     
     # The anomaly score should be low
     assert prediction["risk_score"] < 0.50
