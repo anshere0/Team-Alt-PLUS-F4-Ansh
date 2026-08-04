@@ -1,24 +1,12 @@
-from sqlalchemy import desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.db.models.alert import Alert, AlertStatus
-from app.db.models.meter import SmartMeter
-from app.db.models.grid import Transformer, Feeder, Substation
+from app.db.models.alert import AlertStatus
+from app.repositories.alert_repo import alert_repo
 
-async def get_active_alerts(db: AsyncSession, limit: int = 50):
-    query = (
-        select(Alert, SmartMeter, Transformer, Feeder, Substation)
-        .join(SmartMeter, Alert.meter_id == SmartMeter.id)
-        .join(Transformer, SmartMeter.transformer_id == Transformer.id)
-        .join(Feeder, Transformer.feeder_id == Feeder.id)
-        .join(Substation, Feeder.substation_id == Substation.id)
-        .where(Alert.status != AlertStatus.RESOLVED)
-        .order_by(desc(Alert.created_at))
-        .limit(limit)
-    )
-    result = await db.execute(query)
+async def get_active_alerts(db: AsyncSession, skip: int = 0, limit: int = 50):
+    result = await alert_repo.get_active_alerts_with_relations(db, skip, limit)
     
     alerts = []
-    for alert, meter, transformer, feeder, substation in result.all():
+    for alert, meter, transformer, feeder, substation in result:
         alerts.append({
             'alert_id': alert.id,
             'meter_id': meter.meter_number,

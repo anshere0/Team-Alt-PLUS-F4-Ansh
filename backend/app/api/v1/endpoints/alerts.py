@@ -12,9 +12,10 @@ router = APIRouter()
 
 @router.get("/")
 async def get_active_alerts(
+    skip: int = 0,
     limit: int = 50,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     """Retrieve active un-resolved alerts."""
-    return await alert_service.get_active_alerts(db, limit)
+    return await alert_service.get_active_alerts(db, skip, limit)
