@@ -18,6 +18,8 @@ black
 ruff
 mypy
 openai
+scikit-learn
+numpy
 httpx
 slowapi
 python-multipart
