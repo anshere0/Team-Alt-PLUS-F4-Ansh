@@ -6,7 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
 from app.db.models.meter import SmartMeter, TelemetryReading
-from app.services.ai_client import get_risk_prediction
+from app.services.prediction_service import prediction_service
+from app.schemas.predict import PredictRiskRequest
 from app.db.models.prediction import Prediction
 
 async def parse_csv_telemetry(file: UploadFile, db: AsyncSession) -> dict:
@@ -47,7 +48,17 @@ async def parse_csv_telemetry(file: UploadFile, db: AsyncSession) -> dict:
             temperature = float(row.get("temperature_c", 30))
             
             # Predict risk for this historical data point
-            risk_pred = await get_risk_prediction(meter.id, active_power, ts)
+            request_data = PredictRiskRequest(
+                gridId=meter.id,
+                timestamp=ts,
+                currentLoad=active_power,
+                temperature=temperature,
+                humidity=40.0,
+                voltage_v=voltage,
+                current_a=current,
+                power_factor=power_factor
+            )
+            risk_pred = await prediction_service.predict_risk(request_data, db)
             
             risk_score = risk_pred.prediction if risk_pred else 0.0
             anomaly_type = risk_pred.riskLevel if risk_pred else "NONE"
@@ -71,15 +82,17 @@ async def parse_csv_telemetry(file: UploadFile, db: AsyncSession) -> dict:
             db.add(telemetry)
             
             # Insert Prediction log
-            prediction = Prediction(
+            from app.repositories.prediction_repo import prediction_repo, PredictionCreate
+            
+            prediction_in = PredictionCreate(
                 meter_id=meter.id,
                 timestamp=ts,
                 risk_score=risk_score,
                 anomaly_type=anomaly_type,
-                confidence_score=0.9,
+                confidence=0.9,
                 financial_loss_estimate=float(row.get("financial_loss_estimate", 0.0)) or (1000 * risk_score)
             )
-            db.add(prediction)
+            await prediction_repo.create(db, obj_in=prediction_in)
             
             records_processed += 1
             
