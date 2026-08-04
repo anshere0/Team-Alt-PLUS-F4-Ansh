@@ -1,0 +1,52 @@
+# Default values for GridGuard.
+
+backend:
+  replicaCount: 2
+  image:
+    repository: gridguard/backend
+    tag: latest
+    pullPolicy: IfNotPresent
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+    requests:
+      cpu: 200m
+      memory: 256Mi
+
+worker:
+  replicaCount: 1
+  image:
+    repository: gridguard/backend
+    tag: latest
+    pullPolicy: IfNotPresent
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+    requests:
+      cpu: 200m
+      memory: 256Mi
+
+frontend:
+  replicaCount: 2
+  image:
+    repository: gridguard/frontend
+    tag: latest
+    pullPolicy: IfNotPresent
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+config:
+  corsOrigins: "http://gridguard.local,http://localhost:3000"
+  nextPublicApiUrl: "http://api.gridguard.local"
+
+secret:
+  # In production, these should be managed by external secret operators
+  databaseUrl: "postgresql+asyncpg://user:pass@db-host:5432/gridguard"
+  secretKey: "super-secret-enterprise-key-change-me"

@@ -1,0 +1,9 @@
+apiVersion: v2
+name: gridguard
+description: GridGuard AI - Smart Grid Monitoring & Telemetry Platform
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+maintainers:
+  - name: "GridGuard Engineering"
+    email: "engineering@gridguard.ai"
