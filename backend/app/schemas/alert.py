@@ -29,3 +29,17 @@ class TelemetryResponse(BaseModel):
     anomaly_type: str | None = None
     
     model_config = ConfigDict(from_attributes=True)
+
+class ResolveAlertRequest(BaseModel):
+    notes: str = ""
+
+class AuditLogResponse(BaseModel):
+    id: str
+    action: str
+    actor_id: str
+    target_entity: str
+    target_id: str
+    timestamp: datetime
+    details: dict | None = None
+
+    model_config = ConfigDict(from_attributes=True)

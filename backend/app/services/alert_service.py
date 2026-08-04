@@ -23,3 +23,10 @@ async def get_active_alerts(db: AsyncSession, skip: int = 0, limit: int = 50):
             'is_acknowledged': alert.status == AlertStatus.ACKNOWLEDGED
         })
     return alerts
+
+async def resolve_alert(db: AsyncSession, alert_id: str, current_user_id: str, notes: str = ""):
+    alert = await alert_repo.resolve_alert(db, alert_id, current_user_id, notes)
+    return alert
+
+async def get_audit_logs(db: AsyncSession, skip: int = 0, limit: int = 50):
+    return await alert_repo.get_audit_logs(db, skip, limit)
