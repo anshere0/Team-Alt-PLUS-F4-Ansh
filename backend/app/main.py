@@ -19,15 +19,8 @@ from fastapi_cache.backends.inmemory import InMemoryBackend
 async def lifespan(app: FastAPI):
     # Startup: Initialize FastAPICache
     FastAPICache.init(InMemoryBackend(), prefix="fastapi-cache")
-    # Startup: Create simulator task
-    simulator_task = asyncio.create_task(run_simulation())
     yield
-    # Shutdown: Cancel simulator task
-    simulator_task.cancel()
-    try:
-        await simulator_task
-    except asyncio.CancelledError:
-        pass
+    # Shutdown: Nothing to clean up anymore
 
 from fastapi import Request
 from fastapi.responses import JSONResponse
