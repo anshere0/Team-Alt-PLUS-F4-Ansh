@@ -17,6 +17,12 @@ const ATCChart = dynamic(() => import('@/components/dashboard/ATCChart').then(mo
   ssr: false
 });
 
+// Dynamically import Leaflet Map to avoid window is not defined errors during SSR
+const GridMap = dynamic(() => import('@/components/dashboard/GridMap').then(mod => mod.GridMap), {
+  loading: () => <div className="glass-panel h-[400px] animate-pulse bg-gray-100 rounded-xl" />,
+  ssr: false
+});
+
 export default function DashboardPage() {
   const { summary, atcTrend, isLoading, isError, refetch } = useDashboard();
   const { alerts, acknowledgeAlert } = useAlerts();
@@ -62,6 +68,16 @@ export default function DashboardPage() {
               </ErrorBoundary>
               <p className="text-[11px] text-[var(--text-muted)] italic font-sans px-2">
                 ↑ These KPIs are aggregated in real-time from the PostgreSQL database. Each card shows a live metric computed from smart meter telemetry, AI predictions, and alert records. Trend arrows indicate 24h change.
+              </p>
+            </div>
+
+            {/* Geographical Map */}
+            <div className="space-y-2">
+              <ErrorBoundary componentName="GridMap">
+                <GridMap />
+              </ErrorBoundary>
+              <p className="text-[11px] text-[var(--text-muted)] italic font-sans px-2">
+                ↑ Real-time GIS visualization. Markers shift to red when the Scikit-Learn Isolation Forest detects theft or anomalies in incoming WebSocket telemetry.
               </p>
             </div>
 
