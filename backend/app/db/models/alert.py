@@ -24,14 +24,14 @@ class Alert(Base):
     __tablename__ = "alerts"
     
     id: Mapped[str] = mapped_column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    meter_id: Mapped[str] = mapped_column(String, ForeignKey("smart_meters.id"))
-    transformer_id: Mapped[str] = mapped_column(String, ForeignKey("transformers.id"))
+    meter_id: Mapped[str] = mapped_column(String, ForeignKey("smart_meters.id", ondelete="CASCADE"), index=True)
+    transformer_id: Mapped[str] = mapped_column(String, ForeignKey("transformers.id", ondelete="CASCADE"), index=True)
     severity: Mapped[str] = mapped_column(String)
     risk_score: Mapped[float] = mapped_column(Float)
     anomaly_type: Mapped[str] = mapped_column(String)
     message: Mapped[str] = mapped_column(String)
     financial_loss_estimate: Mapped[float] = mapped_column(Float)
-    status: Mapped[AlertStatus] = mapped_column(SQLEnum(AlertStatus), default=AlertStatus.ACTIVE)
+    status: Mapped[AlertStatus] = mapped_column(SQLEnum(AlertStatus), default=AlertStatus.ACTIVE, index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
 class Inspection(Base):

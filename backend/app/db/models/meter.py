@@ -22,12 +22,17 @@ class SmartMeter(Base):
     telemetry_readings: Mapped[list["TelemetryReading"]] = relationship("TelemetryReading", back_populates="meter", cascade="all, delete-orphan")
     predictions: Mapped[list["Prediction"]] = relationship("Prediction", back_populates="meter", cascade="all, delete-orphan")
 
+from sqlalchemy import DateTime, Float, ForeignKey, String, Index
+
 class TelemetryReading(Base):
     __tablename__ = "telemetry_readings"
+    __table_args__ = (
+        Index("ix_telemetry_meter_timestamp", "meter_id", "timestamp"),
+    )
     
     id: Mapped[str] = mapped_column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    meter_id: Mapped[str] = mapped_column(String, ForeignKey("smart_meters.id"))
-    timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
+    meter_id: Mapped[str] = mapped_column(String, ForeignKey("smart_meters.id", ondelete="CASCADE"), index=True)
+    timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     active_power_kwh: Mapped[float] = mapped_column(Float)
     expected_power_kwh: Mapped[float] = mapped_column(Float)
     voltage_v: Mapped[float] = mapped_column(Float)
