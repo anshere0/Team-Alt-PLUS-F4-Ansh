@@ -49,7 +49,7 @@ export function useWebSocket() {
                 financial_loss_estimate: message.data?.financial_loss_estimate || 0.0,
                 message: message.data?.message || 'AI detected an anomaly.',
                 timestamp: new Date().toISOString(),
-                status: 'ACTIVE',
+                is_acknowledged: false,
               };
               addAlert(newAlert);
             }
