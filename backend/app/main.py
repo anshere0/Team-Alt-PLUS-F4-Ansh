@@ -24,11 +24,32 @@ async def lifespan(app: FastAPI):
     except asyncio.CancelledError:
         pass
 
+from fastapi import Request
+from fastapi.responses import JSONResponse
+from app.core.exceptions import EntityNotFoundException, BusinessRuleViolationException
+from app.core.middleware import LoggingMiddleware
+
 app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     lifespan=lifespan
 )
+
+app.add_middleware(LoggingMiddleware)
+
+@app.exception_handler(EntityNotFoundException)
+async def entity_not_found_handler(request: Request, exc: EntityNotFoundException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"error": "Entity Not Found", "detail": exc.detail},
+    )
+
+@app.exception_handler(BusinessRuleViolationException)
+async def business_rule_violation_handler(request: Request, exc: BusinessRuleViolationException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"error": "Business Rule Violation", "detail": exc.detail},
+    )
 
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
